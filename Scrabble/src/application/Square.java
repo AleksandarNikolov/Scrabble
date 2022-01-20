@@ -114,4 +114,9 @@ public class Square {
 		this.value = value;
 	}
 
+	public void setHasPiece(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
