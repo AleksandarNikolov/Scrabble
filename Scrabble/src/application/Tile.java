@@ -1,6 +1,6 @@
 package application;
 
-import ecs100.UI;
+
 
 public class Tile {
 	public static final int Size = 40;

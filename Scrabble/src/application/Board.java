@@ -4,7 +4,12 @@ import java.util.Arrays;
 
 public class Board {
 	
-	public static final int DIM = 15;
+	public static final int SIZE = 15;
+	
+	public Board(Square[][] squares) {
+		this.squares = squares;
+	}
+	
     private static final String[] NUMBERING = { "    | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O |    ",
     											"----|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|----",
     											"  1 | 3 |   |   | 2 |   |   |   | 3 |   |   |   | 2 |   |   | 3 |    ",
@@ -41,38 +46,33 @@ public class Board {
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
     
-    private Square[][] squares;
-  
-	
-    public Board() {
+    private Square[][] squares; //create 2-dimensional square array
     
     
-    
-    /**
-     
-    int[] col = new int[DIM];
-    int[] row = new int[DIM];
-    
-    	for ( int i = 0 ; i < col.length ; i++ ) {
-    		for( int j = 0 ; j < row.length ; j++) {
-    			Square square = new Square(i,j);
-    		}
-    	}
-     
-     */
-   
-    	
+    public Square placeTile(int x, int y, Tile tile) {
+    	this.squares[x][y].setTile(tile); //Make setTile
+    	return this.squares[x][y];
     }
     
-    public Board boardCopy() {
-        
-    	Board boardCopy = new Board();	
-    	boardCopy.squares = this.squares.clone();
-    	return boardCopy;
+    public Square getSquare(int x, int y) throws Exception {
+    	if(x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+    		throw new Exception("Square out of bounds!");
+    	}
+    	return this.squares[x][y];
+    }
+    
+    public Board clone() {
+    	Square[][] newSquars = new Square[SIZE][SIZE];
     	
-        }
-    
-    
+    	for (int x = 0; x < SIZE; x++) {
+    		for (int y = 0; y < SIZE; y++) {
+    			newSquars[x][y] = (Square) squares[x][y];
+    		}
+    	}
+    	return new Board(newSquars);
+    }
+  
+
     /**
      * Calculates the index in the linear array of fields from a (row, col)
      * pair.
@@ -81,7 +81,7 @@ public class Board {
      * @return the index belonging to the (row,col)-field
      */
     public int index(int col, int row) {
-    	return (col * DIM) + row;
+    	return (col * SIZE) + row;
     }
     
     /**
@@ -90,7 +90,7 @@ public class Board {
      * @return true if 0 <= index < DIM*DIM
      */
     public boolean isField(int index) {
-        return index >= 0 && index < DIM * DIM;
+        return index >= 0 && index < SIZE * SIZE;
     }
     
     /**
@@ -99,7 +99,7 @@ public class Board {
      * @return true if 0 <= row < DIM && 0 <= col < DIM
      */
     public boolean isField(int row, int col) {
-    	return row >= 0  && row < DIM && col >= 0 && col < DIM;
+    	return row >= 0  && row < SIZE && col >= 0 && col < SIZE;
     }
     
     /**
@@ -109,8 +109,8 @@ public class Board {
      * @param i the number of the field (see NUMBERING)
      * @return the mark on the field
      */
-    public Square getField(int i) {
-    	return this.squares[i][i];
+    public Square[] getSquare(int i) {
+    	return this.squares[i];
     }
     
     /**
@@ -121,8 +121,8 @@ public class Board {
      * @param col the column of the field
      * @return the mark on the field
      */
-    public Square getField(int row, int col) {
-    	return getField(index(row, col));
+    public Square[] getField(int row, int col) {
+    	return getSquare(index(row, col));
     }
     
     /**
@@ -133,7 +133,7 @@ public class Board {
      * @return true if the field is empty
      */
     public boolean isEmpty(int i) {
-    	return getField(i).isEmpty();
+    	return getSquare(i).length == 0;
     }
     
     /**
@@ -145,7 +145,7 @@ public class Board {
      * @return true if the field is empty
      */
     public boolean isEmpty(int row, int col) {
-    	return getField(row, col).isEmpty();
+    	return getField(row, col).length == 0;
     }
     
     /**
@@ -169,8 +169,7 @@ public class Board {
      * @return true if the game is over
      */
     public boolean gameOver() {
-    	// Optional add timer
-        return hasWinner();
+        return hasWinner() || isFull();
     }
     
     
@@ -184,13 +183,14 @@ public class Board {
      * m.
      * @param m the Mark of interest
      * @return true if there is a row controlled by m
+     * @throws Exception 
      */
-    public boolean hasRow(Square m) {
+    public boolean hasRow(Square m) throws Exception {
     	boolean hasRow = false;
-    	for (int row = 0; row < DIM && !hasRow; row++) {
+    	for (int row = 0; row < SIZE && !hasRow; row++) {
     		hasRow = true;
-    		for (int col = 0; col < DIM && hasRow; col++) {
-    			hasRow = getField(row, col) == m;
+    		for (int col = 0; col < SIZE && hasRow; col++) {
+    			hasRow = getSquare(row, col) == m;
     		}
     	}
     	return hasRow;
@@ -201,13 +201,14 @@ public class Board {
      * m.
      * @param m the Mark of interest
      * @return true if there is a column controlled by m
+     * @throws Exception 
      */
-    public boolean hasColumn(Square m) {
+    public boolean hasColumn(Square m) throws Exception {
     	boolean hasCol = false;
-    	for (int col = 0; col < DIM && !hasCol; col++) {
+    	for (int col = 0; col < SIZE && !hasCol; col++) {
     		hasCol = true;
-    		for (int row = 0; row < DIM && hasCol; row++) {
-    			hasCol = getField(row, col) == m;
+    		for (int row = 0; row < SIZE && hasCol; row++) {
+    			hasCol = getSquare(row, col) == m;
     		}
     	}
     	return hasCol;
@@ -218,11 +219,12 @@ public class Board {
      * least one row, column.
      * @requires m to be either XX or OO
      * @ensures true when m has a row, column or diagonal 
-     * @param m the mark of interest
+     * @param squares2 the mark of interest
      * @return true if the mark has won
+     * @throws Exception 
      */
-    public boolean isWinner(Square m) {
-    	return true;
+    public boolean isWinner(Square[][] squares2) throws Exception {
+    	return hasRow(squares2) || hasColumn(squares2);
     }
 
     /**
@@ -232,7 +234,7 @@ public class Board {
      * @return true if the student has a winner.
      */
     public boolean hasWinner() {
-        return isWinner(null);
+        return isWinner(squares);
     }
     
     
@@ -244,16 +246,16 @@ public class Board {
      */
     public String toString() {
         String s = "";
-        for (int i = 0; i < DIM; i++) {
+        for (int i = 0; i < SIZE; i++) {
             String row = "";
-            for (int j = 0; j < DIM; j++) {
+            for (int j = 0; j < SIZE; j++) {
                 row = row + " " + getField(i, j).toString() + " ";
-                if (j < DIM - 1) {
+                if (j < SIZE - 1) {
                     row = row + "|";
                 }
             }
             s = s + row + DELIM + NUMBERING[i * 2];
-            if (i < DIM - 1) {
+            if (i < SIZE - 1) {
                 s = s + "\n" + LINE + DELIM + NUMBERING[i * 2 + 1] + "\n";
             }
         }
@@ -290,14 +292,14 @@ public class Board {
      * @param col the field's column
      * @param m the mark to be placed
      */
-    public void setField(int row, int col, Tile tile) {
-    	//squares[index(row, col)] = tile;
+    public void setField(int row, int col, Square[] m) {
+    	squares[index(row, col)] = m;
     }
     
     
     public static void main(String[] args) {
     	
-    	Board bard = new Board();
+    	Board bard = new Board(squares);
     	
     	bard.toString();
     	
@@ -308,9 +310,5 @@ public class Board {
 	}
 
 
-	public void setField(int choice, int value) {
-		// TODO Auto-generated method stub
-		
-	}
     
 }

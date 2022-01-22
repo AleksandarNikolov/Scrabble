@@ -68,7 +68,7 @@ public class Player {
      * @return the player's choice
      */
     public Board determineMove(Board board) {
-		return board;
+		return board;// to do
 	}
 
     // -- Commands ---------------------------------------------------
@@ -79,6 +79,6 @@ public class Player {
      * @param board the current board
      */
     public void makeMove(Tile tile, int x, int y) {
-    }
+    }// to do
 
 }

@@ -14,7 +14,7 @@ public class Square {
 	private int multiplier;
 	private boolean forWord;
 	private boolean empty;
-	
+	private Tile tile;
 	
 	/**
 	 * Constructor for the tiles.
@@ -115,6 +115,10 @@ public class Square {
 	public void setHasPiece(boolean b) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setTile(Tile tile) {
+		this.tile = tile;
 	}
 
 }
