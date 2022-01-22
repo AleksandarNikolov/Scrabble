@@ -41,12 +41,11 @@ public class Board {
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
     
-    private Square[] fields;
-    Square square;
+    private Square[][] squares;
   
 	
     public Board() {
-    fields = new Square[DIM*DIM];
+    
     
     
     /**
@@ -68,7 +67,7 @@ public class Board {
     public Board boardCopy() {
         
     	Board boardCopy = new Board();	
-    	boardCopy.fields = this.fields.clone();
+    	boardCopy.squares = this.squares.clone();
     	return boardCopy;
     	
         }
@@ -111,7 +110,7 @@ public class Board {
      * @return the mark on the field
      */
     public Square getField(int i) {
-    	return this.fields[i];
+    	return this.squares[i][i];
     }
     
     /**
@@ -155,7 +154,7 @@ public class Board {
      * @return true if all fields are occupied
      */
     public boolean isFull() {
-    	for (int i = 0; i < fields.length; i++) {
+    	for (int i = 0; i < squares.length; i++) {
     		if (isEmpty(i)) {
     			return false;
     		}
@@ -170,7 +169,8 @@ public class Board {
      * @return true if the game is over
      */
     public boolean gameOver() {
-        return hasWinner() || isFull();
+    	// Optional add timer
+        return hasWinner();
     }
     
     
@@ -222,7 +222,7 @@ public class Board {
      * @return true if the mark has won
      */
     public boolean isWinner(Square m) {
-    	return hasRow(m) || hasColumn(m);
+    	return true;
     }
 
     /**
@@ -232,7 +232,7 @@ public class Board {
      * @return true if the student has a winner.
      */
     public boolean hasWinner() {
-        return isWinner(square);
+        return isWinner(null);
     }
     
     
@@ -267,7 +267,7 @@ public class Board {
      *TODO FIX THIS
      */
     public void reset() {
-    	Arrays.fill(this.fields, 0);
+    	Arrays.fill(this.squares, 0);
     }
     
     /**
@@ -277,8 +277,8 @@ public class Board {
      * @param i the field number (see NUMBERING)
      * @param m the mark to be placed
      */
-    public void setField(int i, Square m) {
-    	fields[i] = m;
+    public void setField(int i, Square[] m) {
+    	squares[i] = m;
     }
 
     /**
@@ -290,8 +290,8 @@ public class Board {
      * @param col the field's column
      * @param m the mark to be placed
      */
-    public void setField(int row, int col, Square m) {
-    	fields[index(row, col)] = m;
+    public void setField(int row, int col, Tile tile) {
+    	//squares[index(row, col)] = tile;
     }
     
     

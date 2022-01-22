@@ -1,5 +1,11 @@
 package application;
 
+/**
+ * Class for Square in Scrabble
+ * 
+ * @author 	Aleksandar Nikolov and Andrei Cohan
+ */
+
 public class Square {
 	
 	private int posX;
@@ -23,7 +29,6 @@ public class Square {
 		this.setPosX(posX);
 		this.setPosY(posY);
 		this.setValue(0);
-		this.setMultiplier(0);
 		this.setForWord(false);
 		this.setEmpty();
 		
@@ -62,13 +67,6 @@ public class Square {
 	 */
 	public int getMultiplier() {
 		return multiplier;
-	}
-
-	/**
-	 * @param multiplier the multiplier to set
-	 */
-	public void setMultiplier(int multiplier) {
-		this.multiplier = multiplier;
 	}
 
 	/**

@@ -1,48 +1,38 @@
 package application;
 
+import ecs100.UI;
+
 public class Tile {
-	
+	public static final int Size = 40;
 	private String letter;
 	private int posX;
 	private int posY;
 	private int value;
 	private boolean isPlaced;
 	private boolean isOwned;
-	private Square square;
-	
-	public Tile(String letter,int posX, int posY, int value, boolean isPlaced, boolean isOwned) {
-		this.setLetter(letter);
-		this.setPosX(posX);
-		this.setPosY(posY);
-		this.setValue(value);
-		this.isPlaced = true;
-		this.isOwned = isOwned;
-		
-	}
-	public Tile(String letter, int value, boolean isPlaced, boolean isOwned) {
-		this.setLetter(letter);
-		this.setValue(value);
-		this.isPlaced = false;
-		this.isOwned = isOwned;
-		
-	}
-	
+	private Square square;	
+	private String image;
 
+	public Tile (String name, int val) {
+        value = val;
+        image = "tiles/"+name+".jpg";
+        this.isPlaced = false;
+        this.isOwned = false;
+    }
 	
-
+	public void draw (double x, double y) {
+        UI.drawImage(image, x, y);
+    }
 
 	public int getValue() {
 		return value;
 	}
 
 
-	public void setValue(int value) {
-		this.value = value;
-	}
-
 	/**
 	 * @return the isPlaced
 	 */
+	
 	public boolean isPlaced() {
 		return isPlaced;
 	}

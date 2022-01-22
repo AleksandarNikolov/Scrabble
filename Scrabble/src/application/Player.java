@@ -1,36 +1,37 @@
 package application;
-
-import application.Board;
-import application.Tile;
-
 /**
- * Abstract class for keeping a player in the Tic Tac Toe game. Module 2 lab
- * assignment.
+ * Class for Player in Scrabble
  * 
- * 
- * @author Theo Ruys en Arend Rensink
- * @version $Revision: 1.4 $
+ * @author 	Aleksandar Nikolov and Andrei Cohan
  */
-public abstract class Player {
+public class Player {
 
     // -- Instance variables -----------------------------------------
-
-    private String name;
-    private Score score;
-    private Tile tile;
+	public int id;
+    public String name;
+    public Score score;
+    private Deck deck;
 
     // -- Constructors -----------------------------------------------
 
     /**
      * Creates a new Player object.
      * @requires name is not null
-     * @requires mark is either XX or OO
+     * @requires score >= 0;
      * @ensures the Name of this player will be name
-     * @ensures the Mark of this player will be mark
+     * @ensures the Score of this player will be score;
      */
-    public Player(String name, Score score) {
+    public Player(int id,String name, Score score) {
         this.name = name;
         this.score = score;
+        deck = new Deck();
+    }
+    
+    /**
+     * Returns the deck of the player.
+     */
+    public Deck getDeck() {
+    	return deck;
     }
 
     // -- Queries ----------------------------------------------------
@@ -43,11 +44,21 @@ public abstract class Player {
     }
 
     /**
-     * Returns the mark of the player.
+     * Returns the score of the player.
      */
     public Score getScore() {
         return score;
     }
+    
+    /**
+     * Sets the score of this player
+     */
+    public void setScore(Score score) {
+    	this.score = score;
+    }
+    
+    
+    
 
     /**
      * Determines the field for the next move.
@@ -56,7 +67,9 @@ public abstract class Player {
      * @param board the current game board
      * @return the player's choice
      */
-    public abstract int determineMove(Board board);
+    public Board determineMove(Board board) {
+		return board;
+	}
 
     // -- Commands ---------------------------------------------------
 
@@ -65,9 +78,7 @@ public abstract class Player {
      * @requires board is not null and not full
      * @param board the current board
      */
-    public void makeMove(Board board) {
-        int choice = determineMove(board);
-        board.setField(choice, tile.getValue());
+    public void makeMove(Tile tile, int x, int y) {
     }
 
 }
