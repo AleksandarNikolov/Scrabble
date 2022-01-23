@@ -67,7 +67,7 @@ public class Bag{
      * @return      added successfully
      */
     public void addTiles(char C) {
-        if (this.tiles.containsKey(C)) {
+        if (this.tiles.contains(C)) {
             int newValue = this.tiles.get(C) + 1;
             this.tiles.put(C, newValue);
         }
@@ -96,9 +96,9 @@ public class Bag{
      * @return      removed successfully
      */
     public boolean removeTileFromBag(char C) {
-        if (this.tileBag.containsKey(C) && this.tileBag.get(C) > 0) {
-            int newValue = this.tileBag.get(C) - 1;
-            this.tileBag.put(C, newValue);
+        if (this.tiles.contains(C) && !this.tiles.get(C).equals(0)) {
+            int newValue = this.tiles.indexOf(C) - 1;
+            this.tiles.put(C, newValue);
             return true;
         }
         return false;
@@ -107,12 +107,12 @@ public class Bag{
     
     public Object getRandomLetterFromBag(char C) {
         Random random = new Random();
-        Set<Character> letters = this.tileBag.keySet();
+        Set<Character> letters = this.tiles.keySet();
         Object randomLetter = letters.contains(random.nextInt(letters.size()));
 
         
-       if (this.tileBag.get(randomLetter) == 0) {
-        	while(this.tileBag.get(randomLetter) == 0) {
+       if (this.tiles.get(randomLetter) == 0) {
+        	while(this.tiles.get(randomLetter) == 0) {
         		letters.remove(randomLetter);
         		randomLetter = letters.contains(random.nextInt(letters.size()));
         		
@@ -120,8 +120,8 @@ public class Bag{
         }
 
         else {
-            int newValue = this.tileBag.get(randomLetter) -1;
-            this.tileBag.put((Character) randomLetter, newValue);
+            int newValue = this.tiles.get(randomLetter) -1;
+            this.tiles.put((Character) randomLetter, newValue);
         }
         return randomLetter;
     }

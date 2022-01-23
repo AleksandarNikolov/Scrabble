@@ -21,6 +21,8 @@ Deck is printed as Player rack;
 
 public class Deck{
     private static final Tile[] deck = new Tile[7];  //Players rack that holds all the tiles
+    private static final int DeckSize = 7;
+    private String deckString;
    
     public Deck () {
     	
@@ -62,7 +64,7 @@ public class Deck{
     }
     
     //Check to see if we have no Tiles in our array
-    public boolean rackIsEmpty() {
+    public boolean deckIsEmpty() {
        for(int i = 0; i < 7; i++) {
           if(deck[i] != null)  //Deck at index is not equal to null
              return false;  //Return false
@@ -71,7 +73,7 @@ public class Deck{
     }
     
     //Generate a random deck for the player to start the game
-    public Tile[] generateRack(ArrayList<Tile> bag) {
+    public Tile[] generateDeck(ArrayList<Tile> bag) {
        for(int i = 0; i < 7; i++) {
           int rand = (int)(Math.random() * bag.size());   //Get a random value
           deck[i] = bag.remove(rand);   //Set deck value to piece we are removing
@@ -80,7 +82,7 @@ public class Deck{
     }
     
     //Refill the deck after we create a word or switch out pieces
-    public Tile[] refillRack(ArrayList<Tile> bag) {
+    public Tile[] refillDeck(ArrayList<Tile> bag) {
        for(int i = 0; i < 7; i++) {
           if(deck[i] == null) {   //If the deck value is equal to null
              int rand = (int)(Math.random() * bag.size());   //Get a random number
@@ -90,66 +92,13 @@ public class Deck{
        return deck;   //Return our updated deck
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //fill the Deck with random tiles from the bag
-    //@requires Bag.size > 0
-    //@ensures deck.size = DeckSize = 7
-    public void fill(Bag bag) {
-        for (int pos = 0; pos<DeckSize; pos++) {
-            if (tiles[pos]==null) {
-                tiles[pos]=bag.pick();
-            }
-        }
-    }
-    
-    //reset the Deck
-    //@ensures deck.size = DeckSize = 7
-    public void reset() {
-        for (int i=0; i<DeckSize; i++) {
-            tiles [i] = null;
-        }
-    }
-    
     //print the deck to a string
     public String toString() {
     	
     	for(int i=0; i<DeckSize; i++) {
-    		deck += tiles[i] + ",";
+    		deckString += deck[i] + ",";
     	}
-    	return deck;
+    	return deckString;
     }
-    
-    
-    
-    
-    
-
+ 
 }

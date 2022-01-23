@@ -101,7 +101,7 @@ public class Square {
 	/**
 	 * @return the value
 	 */
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 

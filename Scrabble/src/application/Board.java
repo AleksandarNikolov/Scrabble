@@ -77,7 +77,7 @@ public class Board {
     			newSquars[x][y] = (Square) squares[x][y];
     		}
     	}
-    	return new Board(newSquars);
+    	return new Board();
     }
   
 
@@ -175,12 +175,12 @@ public class Board {
      * or the whole board is full.
      * @ensures true if the board is full or when there is a winner
      * @return true if the game is over
-     */
+     *
     public boolean gameOver() {
         return hasWinner() || isFull();
     }
     
-    
+    */
     
     //TODO change this so its oriented towards Scrabble not TicTacToe
     
@@ -230,21 +230,22 @@ public class Board {
      * @param squares2 the mark of interest
      * @return true if the mark has won
      * @throws Exception 
-     */
+     *
     public boolean isWinner(Square[][] squares2) throws Exception {
     	return hasRow(squares2) || hasColumn(squares2);
     }
+    */
 
     /**
      * Returns true if the game has a winner. This is the case when one of the
      * marks controls at least one row, column or diagonal.
      * @ensures true when either XX or OO has won
      * @return true if the student has a winner.
-     */
+     *
     public boolean hasWinner() {
         return isWinner(squares);
     }
-    
+    */
     
     /**
      * Returns a String representation of this board. In addition to the current
@@ -307,7 +308,7 @@ public class Board {
     
     public static void main(String[] args) {
     	
-    	Board bard = new Board(squares);
+    	Board bard = new Board();
     	
     	bard.toString();
     	
