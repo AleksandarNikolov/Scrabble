@@ -43,12 +43,14 @@ public class Main extends Application {
 	
 	public Main(List<Player> players) {
 		//Generate and shuffle tiles
-		this.availableTiles = TilesGenerator.generateTiles();
+		Bag bag = new Bag();
+		this.availableTiles = bag.tiles;
 		Collections.shuffle(this.availableTiles);
 	
 		
 		//Generate a board
-		this.board = BoardGenerator.generateBoard();
+		Board board = new Board();
+		this.board = board;
 		
 		//Assign players to the game
 		this.players = players;

@@ -13,9 +13,9 @@ public class Board {
 	public static final int SIZE = 15;
 	private static HashSet<String> dict;
 	private static HashMap<String, String> boardScores;
+	private Square[][] squares; //create 2-dimensional square array
 	
-	public Board(Square[][] squares) {
-		this.squares = squares;
+	public Board() {
 	}
 	
     private static final String[] NUMBERING = { "    | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O |    ",
@@ -54,7 +54,7 @@ public class Board {
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
     
-    private Square[][] squares; //create 2-dimensional square array
+    
     
     
     public Square placeTile(int x, int y, Tile tile) {
@@ -345,74 +345,76 @@ public class Board {
     private void initBoardScores() {
         Board.boardScores = new HashMap<String, String>();
         //TRIPLE WORD
-        boardScores.put("00", "3W");
-        boardScores.put("70", "3W");
-        boardScores.put("07", "3W");
-        boardScores.put("014", "3W");
-        boardScores.put("140", "3W");
-        boardScores.put("147", "3W");
-        boardScores.put("714", "3W");
-        boardScores.put("1414", "3W");
+        boardScores.put("11", "3W");
+        boardScores.put("81", "3W");
+        boardScores.put("18", "3W");
+        boardScores.put("125", "3W");
+        boardScores.put("251", "3W");
+        boardScores.put("258", "3W");
+        boardScores.put("825", "3W");
+        boardScores.put("2525", "3W");
 
 
         //DOUBLE WORD
-        boardScores.put("11", "2W");
         boardScores.put("22", "2W");
         boardScores.put("33", "2W");
         boardScores.put("44", "2W");
-        boardScores.put("113", "2W");
-        boardScores.put("212", "2W");
-        boardScores.put("311", "2W");
-        boardScores.put("410", "2W");
-        boardScores.put("131", "2W");
-        boardScores.put("122", "2W");
-        boardScores.put("113", "2W");
-        boardScores.put("104", "2W");
-        boardScores.put("1010", "2W");
-        boardScores.put("1111", "2W");
-        boardScores.put("1212", "2W");
-        boardScores.put("1313", "2W");
+        boardScores.put("55", "2W");
+        boardScores.put("224", "2W");
+        boardScores.put("323", "2W");
+        boardScores.put("422", "2W");
+        boardScores.put("521", "2W");
+        boardScores.put("242", "2W");
+        boardScores.put("233", "2W");
+        boardScores.put("224", "2W");
+        boardScores.put("215", "2W");
+        boardScores.put("2121", "2W");
+        boardScores.put("2222", "2W");
+        boardScores.put("2323", "2W");
+        boardScores.put("2424", "2W");
 
         //TRIPLE LETTER
-        boardScores.put("51", "3L");
-        boardScores.put("91", "3L");
-        boardScores.put("15", "3L");
-        boardScores.put("55", "3L");
-        boardScores.put("95", "3L");
-        boardScores.put("135", "3L");
-        boardScores.put("19", "3L");
-        boardScores.put("59", "3L");
-        boardScores.put("99", "3L");
-        boardScores.put("139", "3L");
-        boardScores.put("513", "3L");
-        boardScores.put("913", "3L");
+        boardScores.put("62", "3L");
+        boardScores.put("102", "3L");
+        boardScores.put("26", "3L");
+        boardScores.put("66", "3L");
+        boardScores.put("106", "3L");
+        boardScores.put("246", "3L");
+        boardScores.put("210", "3L");
+        boardScores.put("610", "3L");
+        boardScores.put("1010", "3L");
+        boardScores.put("2410", "3L");
+        boardScores.put("624", "3L");
+        boardScores.put("1024", "3L");
 
         //DOUBLE LETTER
-        boardScores.put("30", "2L");
-        boardScores.put("110", "2L");
-        boardScores.put("62", "2L");
-        boardScores.put("82", "2L");
-        boardScores.put("03", "2L");
+        boardScores.put("41", "2L");
+        boardScores.put("221", "2L");
         boardScores.put("73", "2L");
-        boardScores.put("143", "2L");
-        boardScores.put("26", "2L");
-        boardScores.put("66", "2L");
-        boardScores.put("86", "2L");
-        boardScores.put("126", "2L");
+        boardScores.put("93", "2L");
+        boardScores.put("14", "2L");
+        boardScores.put("84", "2L");
+        boardScores.put("254", "2L");
         boardScores.put("37", "2L");
-        boardScores.put("117", "2L");
-        boardScores.put("28", "2L");
-        boardScores.put("68", "2L");
-        boardScores.put("88", "2L");
-        boardScores.put("128", "2L");
-        boardScores.put("011", "2L");
-        boardScores.put("711", "2L");
-        boardScores.put("1411", "2L");
-        boardScores.put("612", "2L");
-        boardScores.put("812", "2L");
-        boardScores.put("314", "2L");
-        boardScores.put("1114", "2L");
+        boardScores.put("77", "2L");
+        boardScores.put("97", "2L");
+        boardScores.put("237", "2L");
+        boardScores.put("48", "2L");
+        boardScores.put("228", "2L");
+        boardScores.put("39", "2L");
+        boardScores.put("79", "2L");
+        boardScores.put("99", "2L");
+        boardScores.put("239", "2L");
+        boardScores.put("122", "2L");
+        boardScores.put("822", "2L");
+        boardScores.put("2522", "2L");
+        boardScores.put("723", "2L");
+        boardScores.put("923", "2L");
+        boardScores.put("425", "2L");
+        boardScores.put("2225", "2L");
     }
+    
+    
 
 
     
