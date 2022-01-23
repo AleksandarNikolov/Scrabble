@@ -1,11 +1,24 @@
 package application;
 	
+import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import wordchecker.InMemoryScrabbleWordChecker;
+import wordchecker.ScrabbleWordChecker;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -13,6 +26,108 @@ import javafx.scene.text.Text;
  
 
 public class Main extends Application {
+	
+	public static final int HORIZONTAL = 0;
+	public static final int VERTICAL = 0;
+	
+	private List<Tile> availableTiles;
+	private Board board;
+	private List<Player> players;
+	
+	private Map<Player, List<Tile>> decks = new HashMap<>();
+	private Map<Player, Integer> scores = new HashMap<>();
+	
+	private int currentPlayerIndex;
+	
+	private ScrabbleWordChecker scrabbleWordChecker = new InMemoryScrabbleWordChecker();
+	
+	public Main(List<Player> players) {
+		//Generate and shuffle tiles
+		this.availableTiles = TilesGenerator.generateTiles();
+		Collections.shuffle(this.availableTiles);
+	
+		
+		//Generate a board
+		this.board = BoardGenerator.generateBoard();
+		
+		//Assign players to the game
+		this.players = players;
+		Random r = new Random();
+		currentlyPlayerIndex = r.nextInt(players.size());
+		
+		//Assign tiles to players, and
+		for(Player player : players) {
+			List<Tile> handOut = availableTiles.subList(0,  7);
+			decks.put(player, new ArrayList<>(handOut));
+			availableTiles.removeAll(handOut);
+			
+		}
+	
+	}
+	
+	public Board getBoard() {
+		return board;
+	}
+	public int calculateScore(List<TilePlacement> placements) {}
+	
+	public int doMove(List<TilePlacement> placements, Player player) {}
+	
+	public Player getCurrentPlayer() {
+		return players.get(currentPlayerIndex);
+	}
+	public List<Tile> getTiles(Player player) {
+		return Collections.unmodifiableList(decks.get(player));
+	}
+	public void nextPlayer() {
+		this.currentPlayerIndex = (this.currentPlayerIndex + 1) % players.size();
+	}
+	public List<Tile> pickTiles(int quantity){
+		return availableTiles;
+	}
+	
+	public boolean isFinished() {
+		return decks.values().stream().anyMatch(deck -> deck.size() == 0);
+	}
+	
+	private int giveScore(Player player, int score) {
+		return score;
+	}
+	
+	
+	
+	
+	
+	
+	private int calculateWordPoints(int direction, Square square, Board board, List<TilePlacements> placements) {}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public static void main(String[] args) {
 	

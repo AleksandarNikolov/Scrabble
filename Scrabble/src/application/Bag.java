@@ -77,4 +77,7 @@ public class Bag{
         }
         return tiles.remove(random.nextInt(tiles.size()));
     }
+    public ArrayList<Tile> getTiles() {
+    	return tiles;
+    }
 }

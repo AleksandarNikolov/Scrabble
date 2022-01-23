@@ -3,125 +3,84 @@ package application;
 
 
 public class Tile {
-	public static final int Size = 40;
-	private String letter;
 	private int posX;
 	private int posY;
-	private int value;
+	private String letter = "";   //String letter
+	private int points = 0;    //Number of points for the letter
+	private int row = -1;      //Row the tile is on the board
+	private int col = -1;      //Col the tile is on the board
+	private Square square;
 	private boolean isPlaced;
-	private boolean isOwned;
-	private Square square;	
-	private String image;
 
-	public Tile (String name, int val) {
-        value = val;
-        image = "tiles/"+name+".jpg";
-        this.isPlaced = false;
-        this.isOwned = false;
-    }
+	 public Tile(String letter, int points) {
+	      this.letter = letter;   //Initalize the letter
+	      this.points = points;   //Initalize the points
+	 }
 	
-	public void draw (double x, double y) {
-        UI.drawImage(image, x, y);
-    }
-
-	public int getValue() {
-		return value;
-	}
-
+	 //Return the letter of the tile
+	   public String getLetter() {
+	      return letter;	//Return the letter value
+	   }
+	   
+	 //Set the letter value of the tile
+	   public void setLetter(String letter) {
+	      this.letter = letter;	//The letter value
+	   }
+	   
+	   
+	 //Get the number of points that the tile is worth
+	   public int getPoints() {
+	      return points;	//Return the total points
+	   }
+	   
+	 //Set the points value of the tile
+	   public void setPoints(int points) {
+	      this.points = points;	//Set the total points
+	   }
+	   
+	   
+	 //Get the row that the tile is located
+	   public int getRow() {
+	      return row;	//Return the row
+	   } 
+	   
+	 //Get the col that the tile is located
+	   public int getCol() {
+	      return col;	//Return the col
+	   }
+	   
+	 //Set the location that the tile is located
+	   public void setLocation(int row, int col) {
+	      this.row = row;	//Set the row
+	      this.col = col;	//Set the col
+	   } 
+	   
+	   //Print out the letter value
+	   public String toString() {
+	      return letter;	//Return letter
+	   }
 
 	/**
 	 * @return the isPlaced
 	 */
 	
 	public boolean isPlaced() {
-		return isPlaced;
+		return true;
 	}
-	
-	public void place( String posX, int posY) {
-		square.setValue(this.value);
-		square.setHasPiece(true);
-		this.isPlaced = true;
-	}
-
-
-
 	/**
 	 * @param isPlaced the isPlaced to set
 	 */
-	public void setPlaced(boolean isPlaced) {
-		this.isPlaced = isPlaced;
+	public void setPlaced(boolean isPlaced) throws Exception {
+		if(isPlaced() == true) {
+			throw new Exception("It is already placed!");
+		}
+		isPlaced = true;
 	}
-
-
-
-
-	/**
-	 * @return the isOwned
-	 */
-	public boolean isOwned() {
-		return isOwned;
-	}
-
-
-
-
-	/**
-	 * @param isOwned the isOwned to set
-	 */
-	public void setOwned(boolean isOwned) {
-		this.isOwned = isOwned;
-	}
-
-
-
-
-	/**
-	 * @return the posX
-	 */
-	public String getLetter() {
-		return letter;
-	}
-
-
-
-
-	/**
-	 * @param posX the posX to set
-	 */
-	public void setLetter(String letter) {
-		this.letter = letter;
-	}
-
-
-
-
-	/**
-	 * @return the posY
-	 */
-	public int getPosY() {
-		return posY;
-	}
-
-
-
-
-	/**
-	 * @param posY the posY to set
-	 */
-	public void setPosY(int posY) {
-		this.posY = posY;
-	}
-	/**
-	 * @return the posX
-	 */
-	public int getPosX() {
-		return posX;
-	}
-	/**
-	 * @param posX the posX to set
-	 */
-	public void setPosX(int posX) {
-		this.posX = posX;
+	public void place( String posX, int posY) {
+		square.setValue(this.points);
+		square.setHasPiece(true);
+		this.isPlaced = true;
 	}
 	
+
 }

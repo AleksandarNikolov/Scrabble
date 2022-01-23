@@ -7,7 +7,6 @@ package application;
 public class Player {
 
     // -- Instance variables -----------------------------------------
-	public int id;
     public String name;
     public Score score;
     private Deck deck;
@@ -21,17 +20,10 @@ public class Player {
      * @ensures the Name of this player will be name
      * @ensures the Score of this player will be score;
      */
-    public Player(int id,String name, Score score) {
+    public Player(String name, int totalPoints,Score score) {
         this.name = name;
         this.score = score;
         deck = new Deck();
-    }
-    
-    /**
-     * Returns the deck of the player.
-     */
-    public Deck getDeck() {
-    	return deck;
     }
 
     // -- Queries ----------------------------------------------------
@@ -42,7 +34,13 @@ public class Player {
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * Returns the deck of the player.
+     */
+    public Deck getDeck() {
+        return deck;
+    }
     /**
      * Returns the score of the player.
      */
@@ -50,16 +48,6 @@ public class Player {
         return score;
     }
     
-    /**
-     * Sets the score of this player
-     */
-    public void setScore(Score score) {
-    	this.score = score;
-    }
-    
-    
-    
-
     /**
      * Determines the field for the next move.
      * @requires board is not null and not full
@@ -80,5 +68,7 @@ public class Player {
      */
     public void makeMove(Tile tile, int x, int y) {
     }// to do
-
+  
+    
+    
 }

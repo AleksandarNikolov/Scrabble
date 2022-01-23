@@ -10,7 +10,7 @@ public class Square {
 	
 	private int posX;
 	private int posY;
-	private int value;
+	private double value;
 	private int multiplier;
 	private boolean forWord;
 	private boolean empty;
@@ -108,8 +108,8 @@ public class Square {
 	/**
 	 * @param value the value to set
 	 */
-	public void setValue(int value) {
-		this.value = value;
+	public void setValue(double value) {
+		this.value = (double) value;
 	}
 
 	public void setHasPiece(boolean b) {
