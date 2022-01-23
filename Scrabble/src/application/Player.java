@@ -6,12 +6,12 @@ package application;
  */
 public class Player {
 
-    // -- Instance variables -----------------------------------------
     public String name;
+    private int id;
     public Score score;
     private Deck deck;
-
-    // -- Constructors -----------------------------------------------
+    private int currentScore;
+    private Player[] players;
 
     /**
      * Creates a new Player object.
@@ -20,19 +20,30 @@ public class Player {
      * @ensures the Name of this player will be name
      * @ensures the Score of this player will be score;
      */
-    public Player(String name, int totalPoints,Score score) {
-        this.name = name;
+    public Player(int id,String name, int totalPoints,Score score) {
+        this.setName(name);
+        this.setId(id);
         this.score = score;
         deck = new Deck();
     }
-
-    // -- Queries ----------------------------------------------------
 
     /**
      * Returns the name of the player.
      */
     public String getName() {
         return name;
+    }
+    
+    public void setName(String name) {
+    	this.name = name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     /**
@@ -58,8 +69,22 @@ public class Player {
     public Board determineMove(Board board) {
 		return board;// to do
 	}
+    
+    public int getCurrentScore() {
+        return currentScore;
+    }
+    
+    public Player[] getPlayers() {
+        return players;
+    }
 
-    // -- Commands ---------------------------------------------------
+    public void setPlayers(Player[] players) {
+        this.players = players;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
 
     /**
      * Makes a move on the board. <br>

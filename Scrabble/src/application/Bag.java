@@ -23,61 +23,106 @@ import java.util.*;
 */
 
 public class Bag{
-    private ArrayList <Tile> tiles = new ArrayList <Tile>();
+	private HashMap<Character, Integer> tileBag;
     private Random random = new Random ();
 
     public Bag () {
         reset ();
     }
 
-    public void reset () {
-        tiles = new ArrayList<Tile>();
-        addTiles (2, "blank", 0);
-        addTiles (12, "E", 1);
-        addTiles (9, "A", 1);
-        addTiles (9, "I", 1);
-        addTiles (8, "O", 1);
-        addTiles (6, "N", 1);
-        addTiles (6, "R", 1);
-        addTiles (6, "T", 1);
-        addTiles (4, "L", 1);
-        addTiles (4, "S", 1);
-        addTiles (4, "U", 1);
-        addTiles (4, "D", 2);
-        addTiles (3, "G", 2);
-        addTiles (2, "B", 3);
-        addTiles (2, "C", 3);
-        addTiles (2, "M", 3);
-        addTiles (2, "P", 3);
-        addTiles (2, "F", 4);
-        addTiles (2, "H", 4);
-        addTiles (2, "V", 4);
-        addTiles (2, "W", 4);
-        addTiles (2, "Y", 4);
-        addTiles (1, "K", 5);
-        addTiles (1, "J", 8);
-        addTiles (1, "X", 8);
-        addTiles (1, "Q", 10);
-        addTiles (1, "Z", 10);        
-    }
-
-    private void addTiles (int count, String name, int score) {
-        for (int i=0; i<count; i++) {
-            tiles.add(new Tile(name,score));
+    /**
+     * Tile bag initialization and distribution
+     * //TODO: Find a way to read these values directly from the file (if time permits)
+     */
+    private void reset() {
+        this.tileBag =  new HashMap<Character, Integer>();
+        if (this.tileBag.isEmpty()) {
+            this.tileBag.put('A', 9);
+            this.tileBag.put('B', 2);
+            this.tileBag.put('C', 2);
+            this.tileBag.put('D', 4);
+            this.tileBag.put('E', 12);
+            this.tileBag.put('F', 2);
+            this.tileBag.put('G', 3);
+            this.tileBag.put('H', 2);
+            this.tileBag.put('I', 9);
+            this.tileBag.put('J', 1);
+            this.tileBag.put('K', 1);
+            this.tileBag.put('L', 4);
+            this.tileBag.put('M', 2);
+            this.tileBag.put('N', 6);
+            this.tileBag.put('O', 8);
+            this.tileBag.put('P', 2);
+            this.tileBag.put('Q', 1);
+            this.tileBag.put('R', 6);
+            this.tileBag.put('S', 4);
+            this.tileBag.put('T', 6);
+            this.tileBag.put('U', 4);
+            this.tileBag.put('V', 2);
+            this.tileBag.put('W', 2);
+            this.tileBag.put('X', 1);
+            this.tileBag.put('Y', 2);
+            this.tileBag.put('Z', 1);
         }
+    }
+    /**
+     * Used when players give up their turns
+     * @param C     Tile added back to bag
+     * @return      added successfully
+     */
+    public void addTileToBag(char C) {
+        if (this.tileBag.containsKey(C)) {
+            int newValue = this.tileBag.get(C) + 1;
+            this.tileBag.put(C, newValue);
+        }
+    }
+    
+    public int totalNumberOfTilesInBag() {
+        int total = 0;
+
+        for (int i=65; i<=90; i++) {
+            char C = (char) i;
+            total += tileBag.get(C);
+        }
+
+        return total;
+
     }
 
     public boolean isEmpty () {
-        return tiles.isEmpty();
+        return tileBag.isEmpty();
+    }
+    /**
+     * / *****  USE THE getRandomLetterFromBag(char C) instead of this    *****  /
+     *
+     * Used when game starts and after each move
+     * @param C     Tile to be removed
+     * @return      removed successfully
+     */
+    public boolean removeTileFromBag(char C) {
+        if (this.tileBag.containsKey(C) && this.tileBag.get(C) > 0) {
+            int newValue = this.tileBag.get(C) - 1;
+            this.tileBag.put(C, newValue);
+            return true;
+        }
+        return false;
+    }
+    
+    
+    public Object getRandomLetterFromBag(char C) {
+        Random random = new Random();
+        Object[] letters = this.tileBag.keySet().toArray();
+        Object randomLetter = letters[random.nextInt(letters.length)];
+
+        if (this.tileBag.get(randomLetter) == 0) {
+            // need to go recursive on the getRandomLetterFromBag function
+        }
+
+        else {
+            int newValue = this.tileBag.get(randomLetter) -1;
+            this.tileBag.put((Character) randomLetter, newValue);
+        }
+        return randomLetter;
     }
 
-    public Tile pick () {
-        if (tiles.isEmpty()) {
-            return null;
-        }
-        return tiles.remove(random.nextInt(tiles.size()));
-    }
-    public ArrayList<Tile> getTiles() {
-    	return tiles;
-    }
 }
