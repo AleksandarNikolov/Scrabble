@@ -6,10 +6,23 @@ import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Scanner;
 
 import packets.RemovePlayerPacket;
 
 public class Client implements Runnable {
+	
+	
+	public static void main(String args[]) {
+		
+		Scanner sc = new Scanner(System.in);
+		Client client = new Client("localhost",8888);
+		client.connect();
+		
+	}
+	
+	
+	
 
 	// client variables
 

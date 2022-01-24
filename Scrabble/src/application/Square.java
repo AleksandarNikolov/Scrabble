@@ -1,5 +1,7 @@
 package application;
 
+import java.awt.Color;
+
 /**
  * Class for Square in Scrabble
  * 
@@ -10,10 +12,10 @@ public class Square {
 	
 	private int posX;
 	private int posY;
-	private double value;
 	private int multiplier;
 	private boolean forWord;
 	private boolean empty;
+	public Color color;
 	private Tile tile;
 	
 	/**
@@ -25,15 +27,19 @@ public class Square {
 	 * @param forWord
 	 */
 	
-	public Square(int posX,int posY) {
-		this.setPosX(posX);
-		this.setPosY(posY);
-		this.setValue(0);
-		this.setForWord(false);
-		this.setEmpty();
-		
+	public Square(int posX,int posY,int multiplier , boolean forWord) {
+		this.posX = posX;
+		this.posY = posY;
+		this.multiplier = multiplier;
+		this.forWord = forWord;
+		this.isEmpty();
 	}
 
+	public Square getSquare(int posX,int posY) {
+		return this;
+	}
+	
+	
 	/**
 	 * @return the posY
 	 */
@@ -70,9 +76,10 @@ public class Square {
 	}
 
 	/**
+	 * @param b 
 	 * @return the forWord
 	 */
-	public boolean isForWord() {
+	public boolean isForWord(boolean b) {
 		return forWord;
 	}
 
@@ -98,20 +105,6 @@ public class Square {
 		//todo add check to see if empty or not
 	}
 
-	/**
-	 * @return the value
-	 */
-	public double getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value the value to set
-	 */
-	public void setValue(double value) {
-		this.value = (double) value;
-	}
-
 	public void setHasPiece(boolean b) {
 		// TODO Auto-generated method stub
 		
@@ -119,6 +112,11 @@ public class Square {
 	
 	public void setTile(Tile tile) {
 		this.tile = tile;
+	}
+
+	public void setMultiplier(int i) {
+		this.multiplier = i;
+		
 	}
 
 }

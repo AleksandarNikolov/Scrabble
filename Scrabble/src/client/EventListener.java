@@ -9,7 +9,7 @@ public class EventListener {
 	public void recieved(Object p) {
 		if(p instanceof AddPlayerPacket) {
 			AddPlayerPacket packet = (AddPlayerPacket)p;
-			PlayerHandler.players.put(packet.id, new Player(packet.id,packet.name,packet.totalScore,packet.score));
+			PlayerHandler.players.put(packet.id, new Player(packet.id,packet.name));
 			System.out.println(packet.name + "Has joined the game");
 			
 		}else if(p instanceof RemovePlayerPacket) {

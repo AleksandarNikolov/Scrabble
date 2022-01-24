@@ -1,4 +1,7 @@
 package application;
+
+import java.util.ArrayList;
+
 /**
  * Class for Player in Scrabble
  * 
@@ -20,11 +23,12 @@ public class Player {
      * @ensures the Name of this player will be name
      * @ensures the Score of this player will be score;
      */
-    public Player(int id,String name, int totalPoints,Score score) {
+    public Player(int id,String name) {
         this.setName(name);
         this.setId(id);
+        this.currentScore = 0;
         this.score = score;
-        deck = new Deck();
+        this.deck = deck;
     }
 
     /**
@@ -85,14 +89,23 @@ public class Player {
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
     }
+    
+    public void setDeck(Deck deck) {
+    	this.deck = deck;
+    }
 
     /**
      * Makes a move on the board. <br>
      * @requires board is not null and not full
      * @param board the current board
      */
-    public void makeMove(Tile tile, int x, int y) {
+    public void makeMove(String word, String position) {
     }// to do
+
+	public void skipTurn(ArrayList<String> tilesToReplace) {
+		// TODO Auto-generated method stub
+		
+	}
   
     
     
