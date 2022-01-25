@@ -11,7 +11,7 @@ import java.util.HashSet;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class Board {
+public class Board implements ANSI{
 
 	public static final int SIZE = 15;
 	private static HashSet<String> dict;
@@ -149,12 +149,8 @@ public class Board {
 
 	public void generateBoard() {
 		for (int i = 1; i <= SIZE; i++) {
-			System.out.println("");
 			for (int j = 1; j <= SIZE; j++) {
 				Square square = new Square(i, j, 0, false);
-
-				Text multiplierT = new Text("");
-
 				if (i == 1 & j == 1 || i == 1 && j == 8 || i == 1 && j == 15 || i == 8 && j == 1 || i == 8 && j == 15
 						|| i == 15 && j == 1 || i == 15 && j == 8 || i == 15 && j == 15) {
 					
@@ -169,10 +165,12 @@ public class Board {
 						|| i == 8 && j == 12 || i == 9 && j == 3 || i == 9 && j == 7 || i == 9 && j == 9
 						|| i == 9 && j == 13 || i == 12 && j == 1 || i == 12 && j == 8 || i == 12 && j == 15
 						|| i == 13 && j == 7 || i == 13 && j == 9 || i == 15 && j == 4 || i == 15 && j == 12) {
+					
 					// lightblue
 					square.setMultiplier(2);
 					square.isForWord(false);
 					System.out.print("[L 2]");
+					
 				} else if (i == 2 && j == 6 || i == 2 && j == 10 || i == 6 && j == 2 || i == 6 && j == 6
 						|| i == 6 && j == 10 || i == 6 && j == 14 || i == 10 && j == 2 || i == 10 && j == 6
 						|| i == 10 && j == 10 || i == 10 && j == 14 || i == 14 && j == 6 || i == 14 && j == 10) {
@@ -180,6 +178,7 @@ public class Board {
 					square.setMultiplier(3);
 					square.isForWord(false);
 					System.out.print("[L 3]");
+					
 				} else if (i == 2 && j == 2 || i == 2 && j == 14 || i == 3 && j == 3 || i == 3 && j == 13
 						|| i == 4 && j == 4 || i == 4 && j == 12 || i == 5 && j == 5 || i == 5 && j == 11
 						|| i == 11 && j == 5 || i == 11 && j == 11 || i == 12 && j == 4 || i == 12 && j == 12
@@ -188,16 +187,19 @@ public class Board {
 					square.setMultiplier(2);
 					square.isForWord(true);
 					System.out.print("[W 2]");
+					
 				} else if (i == 8 && j == 8) {
 					// lightpink
 					square.setMultiplier(2);
 					square.isForWord(true);
 					System.out.print("[W 2]");
+					
 				}else {
 					System.out.print("[   ]");
 				}
 
 			}
+			System.out.println("");
 
 		}
 

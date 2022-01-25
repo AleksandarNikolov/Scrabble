@@ -26,7 +26,7 @@ public class Tile {
 	      return "" + letter + "(" + value + ")";
 	   }
 
-		public boolean equals(Object obj) {
+		/*public boolean equals(Object obj) {
 			if(!obj instanceof Tile) {
 				return false;
 			} else {
@@ -56,8 +56,7 @@ public class Tile {
 		isPlaced = true;
 	}
 	public void place( String posX, int posY) {
-		square.setValue(this.points);
-		square.setHasPiece(true);
+		
 		this.isPlaced = true;
 	}
 	
