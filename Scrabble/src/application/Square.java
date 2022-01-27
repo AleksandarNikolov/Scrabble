@@ -12,11 +12,10 @@ public class Square {
 	
 	private int posX;
 	private int posY;
-	private int multiplier;
-	private boolean forWord;
-	private boolean empty;
+	private SquareType type;
+	private Tile letter = null;
 	public Color color;
-	private Tile tile;
+	
 	
 	/**
 	 * Constructor for the tiles.
@@ -27,15 +26,17 @@ public class Square {
 	 * @param forWord
 	 */
 	
-	public Square(int posX,int posY,int multiplier , boolean forWord) {
+	public Square(int posX,int posY, SquareType type) {
 		this.posX = posX;
 		this.posY = posY;
-		this.multiplier = multiplier;
-		this.forWord = forWord;
-		this.isEmpty();
+		this.type = type;
+		
 	}
 
-	public Square getSquare(int posX,int posY) {
+	public Square getSquare(int x, int y) throws Exception {
+		if (x < 0 || x >= 15 || y < 0 || y >= 15) {
+			throw new Exception("Square out of bounds!");
+		}
 		return this;
 	}
 	
@@ -68,55 +69,42 @@ public class Square {
 		this.posX = posX;
 	}
 
-	/**
-	 * @return the multiplier
-	 */
-	public int getMultiplier() {
-		return multiplier;
-	}
-
-	/**
-	 * @param b 
-	 * @return the forWord
-	 */
-	public boolean isForWord(boolean b) {
-		return forWord;
-	}
-
-	/**
-	 * @param forWord the forWord to set
-	 */
-	public void setForWord(boolean forWord) {
-		this.forWord = forWord;
-	}
+	public SquareType getType() {
+        return type;
+    }
 
 	/**
 	 * @return the hasPiece
 	 */
 	public boolean isEmpty() {
-		return empty;
-	}
-
-	/**
-	 * @param hasPiece the hasPiece to set
-	 */
-	public void setEmpty() {
-		this.empty = true;
-		//todo add check to see if empty or not
-	}
-
-	public void setHasPiece(boolean b) {
-		// TODO Auto-generated method stub
-		
+		return letter == null;
 	}
 	
-	public void setTile(Tile tile) {
-		this.tile = tile;
+	public void setTile(Tile letter) {
+		this.letter = letter;
+	}
+	public Tile getTile() {
+		return this.letter;
 	}
 
-	public void setMultiplier(int i) {
-		this.multiplier = i;
-		
-	}
+	public int getWordMultiplier() {
+        if (type == SquareType.DOUBLE_WORD || type == SquareType.CENTRAL_SQUARE) {
+        	return 2;
+        }
+        
+        if (type == SquareType.TRIPLE_WORD) {
+        	return 3;
+        }
+        return 1;
+    }
+	public int getLetterMultiplier() {
+        if (type == SquareType.DOUBLE_LETTER) {
+        	return 2;
+        }
+        if (type == SquareType.TRIPLE_LETTER) {
+        	return 3;
+        }
+        return 1;
+    }
 
 }

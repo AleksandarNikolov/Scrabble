@@ -20,7 +20,7 @@ Deck is printed as Player rack;
  */
 
 public class Deck{
-    private static final Tile[] deck = new Tile[7];  //Players rack that holds all the tiles
+    private ArrayList<Tile> deck = new ArrayList<>();  //Players rack that holds all the tiles
     private static final int DeckSize = 7;
     private String deckString;
    
@@ -30,18 +30,18 @@ public class Deck{
     
     //Get the tile at a specific index
     public Tile getTileIndex(int index) {
-       return deck[index];	//Return tile at index
+       return deck.get(index);	//Return tile at index
     }
     //return the deck of the player
-    public Tile[] getDeck() {
+    public ArrayList<Tile> getDeck() {
     	return deck;
     }
     //Take out a tile of a certain letter
     public Tile getTile(String letter) {
        for(int i = 0; i < 7; i++) {
-          if(deck[i] != null  && letter.equals(deck[i].getLetter())) {   //Tile is not null and equal to letter value
-             Tile temp = deck[i]; //Set temp equal to the tile value
-             deck[i] = null;   //Set the deck at index equal to null
+          if(deck.get(i) != null  && letter.equals(deck.get(i).getLetter())) {   //Tile is not null and equal to letter value
+             Tile temp = deck.get(i); //Set temp equal to the tile value
+             deck.remove(i);   //Set the deck at index equal to null
              return temp;      //Return the temp value
           }                 
        }
@@ -51,7 +51,7 @@ public class Deck{
     //Check to see if the deck contains a certain letter
     public boolean hasLetter(String letter) {
        for(int i = 0; i < 7; i++) { 
-          if(deck[i] != null  && letter.equals(deck[i].getLetter())) {   //Deck value is not null and letter is equal to tile letter
+          if(deck.get(i) != null  && letter.equals(deck.get(i).getLetter())) {   //Deck value is not null and letter is equal to tile letter
              return true;   //Return true
           }
        }
@@ -60,33 +60,33 @@ public class Deck{
     
     //Set deck at position i to tile value
     public void setTile(int i, Tile tile) {
-       this.deck[i] = tile;	//Set the tile at index to our input tile
+       this.deck.add(i, tile);	//Set the tile at index to our input tile
     }
     
     //Check to see if we have no Tiles in our array
     public boolean deckIsEmpty() {
        for(int i = 0; i < 7; i++) {
-          if(deck[i] != null)  //Deck at index is not equal to null
+          if(deck.get(i) != null)  //Deck at index is not equal to null
              return false;  //Return false
        }
        return true;   //Return true
     }
     
     //Generate a random deck for the player to start the game
-    public Tile[] generateDeck(ArrayList<Tile> bag) {
+    public ArrayList<Tile> generateDeck(ArrayList<Tile> bag) {
        for(int i = 0; i < 7; i++) {
           int rand = (int)(Math.random() * bag.size());   //Get a random value
-          deck[i] = bag.remove(rand);   //Set deck value to piece we are removing
+          deck.add(i, bag.remove(rand));   //Set deck value to piece we are removing
        }
        return deck;   //Return the newly created deck
     }
     
     //Refill the deck after we create a word or switch out pieces
-    public Tile[] refillDeck(ArrayList<Tile> bag) {
+    public ArrayList<Tile> refillDeck(ArrayList<Tile> bag) {
        for(int i = 0; i < 7; i++) {
-          if(deck[i] == null) {   //If the deck value is equal to null
+          if(deck.get(i) == null) {   //If the deck value is equal to null
              int rand = (int)(Math.random() * bag.size());   //Get a random number
-             deck[i] = bag.remove(rand);   //Set deck equal to the removed piece from the bag
+             deck.add(i, bag.remove(rand));   //Set deck equal to the removed piece from the bag
           }
        }
        return deck;   //Return our updated deck
@@ -96,9 +96,26 @@ public class Deck{
     public String toString() {
     	
     	for(int i=0; i<DeckSize; i++) {
-    		deckString += deck[i] + ",";
+    		deckString += deck.get(i) + ",";
     	}
     	return deckString;
     }
  
+    //remove tile from deck
+    public void sacrificeTile(char letter,ArrayList<Tile> bag) {
+    	
+    	try { for(Tile tile : deck) {
+    		
+    		if(tile.equals(letter)) {
+    	          deck.remove(tile); //Set deck value to piece we are removing
+    	          bag.set(letter, tile); ////////Question
+    		}
+    	}
+    		
+    		
+    		
+    	} catch (Exception e) {
+    		System.out.println("Tile is not in deck");
+    	}
+    }
 }

@@ -11,12 +11,12 @@ import java.util.HashSet;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class Board implements ANSI{
+public class Board implements ANSI {
 
-	public static final int SIZE = 15;
+	public static final int SIZE = 16;
 	private static HashSet<String> dict;
 	private static HashMap<String, String> boardScores;
-	
+	Square[][] squares = new Square[SIZE][SIZE];
 
 	public Board() {
 	}
@@ -57,37 +57,31 @@ public class Board implements ANSI{
 	private static final String LINE = NUMBERING[1];
 	private static final String DELIM = "     ";
 
-/*	public Square getSquare(int x, int y) throws Exception {
+	public Square getSquare(int x, int y) throws Exception {
 		if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
 			throw new Exception("Square out of bounds!");
 		}
-		return this.square[x][y];
+		return this.squares[x][y];
 	}
 
-	public Board clone() {
+	public Board clone(Board board) {
 		Square[][] newSquars = new Square[SIZE][SIZE];
 
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
-				newSquars[x][y] = (Square) squares[x][y];
+				newSquars[x][y] = board.squares[x][y];
 			}
 		}
 		return new Board();
 	}
+	/*
+	 * public void addSquares() { for(int i = 1 ; i < squares.length ; i++) {
+	 * for(int j = 1 ; j < squares.length ; j++) { Square square = new Square(0, 0,
+	 * 0, false); } }
+	 * 
+	 * }
+	 */
 
-	public void addSquares() {
-	for(int i = 1 ; i < squares.length ; i++) {
-		for(int j = 1 ; j < squares.length ; j++) {
-			Square square = new Square(0, 0, 0, false);
-		}
-	}
-
-	}
-*/	
-	
-	
-	
-	
 	/**
 	 * Returns true if index is a valid index of a field on the board.
 	 * 
@@ -123,6 +117,7 @@ public class Board implements ANSI{
 		Board bard = new Board();
 
 		bard.generateBoard();
+		toString(bard);//////////Question
 	}
 
 	/**
@@ -148,16 +143,15 @@ public class Board implements ANSI{
 	}
 
 	public void generateBoard() {
-		for (int i = 1; i <= SIZE; i++) {
-			for (int j = 1; j <= SIZE; j++) {
-				Square square = new Square(i, j, 0, false);
+		for (int i = 1; i < SIZE ; i++) {
+			for (int j = 1; j < SIZE; j++) {
 				if (i == 1 & j == 1 || i == 1 && j == 8 || i == 1 && j == 15 || i == 8 && j == 1 || i == 8 && j == 15
 						|| i == 15 && j == 1 || i == 15 && j == 8 || i == 15 && j == 15) {
-					
+
+					Square square = new Square(i, j, SquareType.TRIPLE_WORD);
+					squares[i][j] = square;
 					// red
-					square.setMultiplier(3);
-					square.isForWord(true);
-					System.out.print("[W 3]");
+					System.out.print(ANSI.RED_BACKGROUND + "[W 3]" + ANSI.RESET);
 
 				} else if (i == 1 && j == 4 || i == 1 && j == 12 || i == 3 && j == 7 || i == 3 && j == 9
 						|| i == 4 && j == 1 || i == 4 && j == 8 || i == 4 && j == 15 || i == 7 && j == 3
@@ -165,37 +159,39 @@ public class Board implements ANSI{
 						|| i == 8 && j == 12 || i == 9 && j == 3 || i == 9 && j == 7 || i == 9 && j == 9
 						|| i == 9 && j == 13 || i == 12 && j == 1 || i == 12 && j == 8 || i == 12 && j == 15
 						|| i == 13 && j == 7 || i == 13 && j == 9 || i == 15 && j == 4 || i == 15 && j == 12) {
-					
+
 					// lightblue
-					square.setMultiplier(2);
-					square.isForWord(false);
-					System.out.print("[L 2]");
-					
+					Square square = new Square(i, j, SquareType.DOUBLE_LETTER);
+					squares[i][j] = square;
+					System.out.print(ANSI.CYAN_BACKGROUND + "[L 2]" + ANSI.RESET);
+
 				} else if (i == 2 && j == 6 || i == 2 && j == 10 || i == 6 && j == 2 || i == 6 && j == 6
 						|| i == 6 && j == 10 || i == 6 && j == 14 || i == 10 && j == 2 || i == 10 && j == 6
 						|| i == 10 && j == 10 || i == 10 && j == 14 || i == 14 && j == 6 || i == 14 && j == 10) {
 					// blue
-					square.setMultiplier(3);
-					square.isForWord(false);
-					System.out.print("[L 3]");
-					
+					Square square = new Square(i, j, SquareType.TRIPLE_LETTER);
+					squares[i][j] = square;
+					System.out.print(ANSI.BLUE_BACKGROUND + "[L 3]" + ANSI.RESET);
+
 				} else if (i == 2 && j == 2 || i == 2 && j == 14 || i == 3 && j == 3 || i == 3 && j == 13
 						|| i == 4 && j == 4 || i == 4 && j == 12 || i == 5 && j == 5 || i == 5 && j == 11
 						|| i == 11 && j == 5 || i == 11 && j == 11 || i == 12 && j == 4 || i == 12 && j == 12
 						|| i == 13 && j == 3 || i == 13 && j == 13 || i == 14 && j == 2 || i == 14 && j == 14) {
 					// lightpink
-					square.setMultiplier(2);
-					square.isForWord(true);
-					System.out.print("[W 2]");
-					
+					Square square = new Square(i, j, SquareType.DOUBLE_WORD);
+					squares[i][j] = square;
+					System.out.print(ANSI.GREEN_BACKGROUND + "[W 2]" + ANSI.RESET);
+
 				} else if (i == 8 && j == 8) {
 					// lightpink
-					square.setMultiplier(2);
-					square.isForWord(true);
-					System.out.print("[W 2]");
-					
-				}else {
-					System.out.print("[   ]");
+					Square square = new Square(i, j, SquareType.CENTRAL_SQUARE);
+					squares[i][j] = square;
+					System.out.print(ANSI.PURPLE_BACKGROUND + "[W 2]" + ANSI.RESET);
+
+				} else {
+					Square square = new Square(i, j, SquareType.PLAIN);
+					squares[i][j] = square;
+					System.out.print(ANSI.WHITE_BACKGROUND + "[   ]" + ANSI.RESET);
 				}
 
 			}
@@ -204,4 +200,91 @@ public class Board implements ANSI{
 		}
 
 	}
+
+	public Square getNextSquare(Square currentSquare, Direction dir) {
+
+		if (dir.equals(Direction.HORIZONTAL)) {
+			return squares[currentSquare.getPosX() + 1][currentSquare.getPosY()];
+		} else
+			return squares[currentSquare.getPosX()][currentSquare.getPosY() + 1];
+	}
+
+	public enum Direction {
+		HORIZONTAL, VERTICAL;
+	}
+
+	public void readWord() {
+
+	}
+
+	public static void toString(Board board) {
+		String s = "hi";
+
+		for (int i = 1; i < SIZE ; i++) {
+			for(int j = 1; i < SIZE ; j++) {
+				
+				if(board.squares[i][j].getTile() != null) {
+					
+					char c = board.squares[i][j].getTile().getLetter();
+					if(board.squares[i][j].getType().equals(SquareType.TRIPLE_WORD)) {
+						s += ANSI.RED_BACKGROUND;
+
+					}
+					
+					if(board.squares[i][j].getType().equals(SquareType.DOUBLE_LETTER)) {
+						s += ANSI.CYAN_BACKGROUND;
+						
+					}
+					
+					if(board.squares[i][j].getType().equals(SquareType.TRIPLE_LETTER)) {
+						s += ANSI.BLUE_BACKGROUND;
+						
+					}
+				
+					if(board.squares[i][j].getType().equals(SquareType.DOUBLE_WORD)) {
+						s += ANSI.GREEN_BACKGROUND;
+						
+					}
+					if(board.squares[i][j].getType().equals(SquareType.CENTRAL_SQUARE)) {
+						s += ANSI.PURPLE_BACKGROUND;
+						
+					}if(board.squares[i][j].getType().equals(SquareType.PLAIN)) {
+						s += ANSI.WHITE_BACKGROUND;
+						
+					}
+					s += "[ " + c + " ]" + ANSI.RESET;
+					
+				}else if(board.squares[i][j].getTile() == null) {
+					
+					if(board.squares[i][j].getType().equals(SquareType.TRIPLE_WORD)) {
+						s += ANSI.RED_BACKGROUND + "[W 3]" + ANSI.RESET;
+					}
+					
+					if(board.squares[i][j].getType().equals(SquareType.DOUBLE_LETTER)) {
+						s += ANSI.CYAN_BACKGROUND + "[L 2]" + ANSI.RESET;
+					}
+					
+					if(board.squares[i][j].getType().equals(SquareType.TRIPLE_LETTER)) {
+						s += ANSI.BLUE_BACKGROUND + "[L 3]" + ANSI.RESET;
+					}
+				
+					if(board.squares[i][j].getType().equals(SquareType.DOUBLE_WORD)) {
+						s += ANSI.GREEN_BACKGROUND + "[W 2]" + ANSI.RESET;
+					}
+					if(board.squares[i][j].getType().equals(SquareType.CENTRAL_SQUARE)) {
+						s += ANSI.PURPLE_BACKGROUND + "[W 2]" + ANSI.RESET;
+						
+					}if(board.squares[i][j].getType().equals(SquareType.PLAIN)) {
+						s += ANSI.WHITE_BACKGROUND + "[   ]" + ANSI.RESET;
+						
+					}
+				}
+				
+				
+				
+			}
+		}
+		System.out.println(s);
+	}
+	
 }

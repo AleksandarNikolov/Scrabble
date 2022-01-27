@@ -1,5 +1,8 @@
 package application;
 import java.util.*;
+import java.util.Map.Entry;
+
+import exceptions.NoTilesInBagException;
 
 
 /**
@@ -23,122 +26,71 @@ import java.util.*;
 */
 
 public class Bag{
-    ArrayList <Tile> tiles = new ArrayList <Tile>();
-    private Random random = new Random ();
+	ArrayList<Tile> tiles;
+    private HashMap<Character, Integer[]> letters;
 
     public Bag () {
         reset ();
     }
 
     public void reset () {
-        tiles = new ArrayList <Tile>();
-        addTiles (2, "blank", 0);
-        addTiles (12, "E", 1);
-        addTiles (9, "A", 1);
-        addTiles (9, "I", 1);
-        addTiles (8, "O", 1);
-        addTiles (6, "N", 1);
-        addTiles (6, "R", 1);
-        addTiles (6, "T", 1);
-        addTiles (4, "L", 1);
-        addTiles (4, "S", 1);
-        addTiles (4, "U", 1);
-        addTiles (4, "D", 2);
-        addTiles (3, "G", 2);
-        addTiles (2, "B", 3);
-        addTiles (2, "C", 3);
-        addTiles (2, "M", 3);
-        addTiles (2, "P", 3);
-        addTiles (2, "F", 4);
-        addTiles (2, "H", 4);
-        addTiles (2, "V", 4);
-        addTiles (2, "W", 4);
-        addTiles (2, "Y", 4);
-        addTiles (1, "K", 5);
-        addTiles (1, "J", 8);
-        addTiles (1, "X", 8);
-        addTiles (1, "Q", 10);
-        addTiles (1, "Z", 10);
-    	}
+    	tiles = new ArrayList<>();
+        letters = new HashMap<Character, Integer[]>();
+        letters.put('A', new Integer[]{9, 1});
+        letters.put('B', new Integer[]{2, 3});
+        letters.put('C', new Integer[]{2, 3});
+        letters.put('D', new Integer[]{4, 2});
+        letters.put('E', new Integer[]{12, 1});
+        letters.put('F', new Integer[]{2, 4});
+        letters.put('G', new Integer[]{3, 2});
+        letters.put('H', new Integer[]{2, 4});
+        letters.put('I', new Integer[]{9, 1});
+        letters.put('J', new Integer[]{1, 8});
+        letters.put('K', new Integer[]{1, 5});
+        letters.put('L', new Integer[]{4, 1});
+        letters.put('M', new Integer[]{2, 3});
+        letters.put('N', new Integer[]{6, 1});
+        letters.put('O', new Integer[]{8, 1});
+        letters.put('P', new Integer[]{2, 3});
+        letters.put('Q', new Integer[]{1, 10});
+        letters.put('R', new Integer[]{6, 1});
+        letters.put('S', new Integer[]{4, 1});
+        letters.put('T', new Integer[]{6, 1});
+        letters.put('U', new Integer[]{4, 1});
+        letters.put('V', new Integer[]{2, 4});
+        letters.put('W', new Integer[]{2, 4});
+        letters.put('X', new Integer[]{2, 8});
+        letters.put('Y', new Integer[]{1, 4});
+        letters.put('Z', new Integer[]{1, 10});
+        letters.put('_', new Integer[]{2, 0});
     
-    /**
-     * Used when players give up their turns
-     * @param C     Tile added back to bag
-     * @return      added successfully
-     */
-    public void addTiles(char C) {
-        if (this.tiles.contains(C)) {
-            int newValue = this.tiles.get(C) + 1;
-            this.tiles.put(C, newValue);
-        }
-    }
-    
-    public int totalNumberOfTilesInBag() {
-        int total = 0;
-
-        for (int i=65; i<=90; i++) {
-            char C = (char) i;
-            total += tiles.get(C);
-        }
-
-        return total;
-
-    }
-
-    public boolean isEmpty () {
-        return tiles.isEmpty();
-    }
-    /**
-     * / *****  USE THE getRandomLetterFromBag(char C) instead of this    *****  /
-     *
-     * Used when game starts and after each move
-     * @param C     Tile to be removed
-     * @return      removed successfully
-     */
-    public boolean removeTileFromBag(char C) {
-        if (this.tiles.contains(C) && !this.tiles.get(C).equals(0)) {
-            int newValue = this.tiles.indexOf(C) - 1;
-            this.tiles.put(C, newValue);
-            return true;
-        }
-        return false;
-    }
-    
-    
-    public Object getRandomLetterFromBag(char C) {
-        Random random = new Random();
-        Set<Character> letters = this.tiles.keySet();
-        Object randomLetter = letters.contains(random.nextInt(letters.size()));
-
-        
-       if (this.tiles.get(randomLetter) == 0) {
-        	while(this.tiles.get(randomLetter) == 0) {
-        		letters.remove(randomLetter);
-        		randomLetter = letters.contains(random.nextInt(letters.size()));
-        		
+        Iterator<?> i = letters.entrySet().iterator(); // make an iterator to manipulate the letters 
+        	while(i.hasNext()) {					//while it has letters in the arraylist
+        		Map.Entry entry = (Entry<?, ?>) i.next();// for every next letter, which will be in the variable entry (Map.Entry returns the whole map)
+        		for (int j = 0; j < ((Integer[])((Entry<?, ?>) i).getValue())[0]; j++) {
+        			 ((List<Tile>) letters).add(new Tile((char) ((Entry<?, ?>) i).getKey(), ((Integer[])((Entry<?, ?>) i).getValue())[1]));
+        		}
         	}
+        	randomMix();
         }
-
-        else {
-            int newValue = this.tiles.get(randomLetter) -1;
-            this.tiles.put((Character) randomLetter, newValue);
-        }
-        return randomLetter;
+    public void randomMix() {
+    	Collections.shuffle(tiles, new Random()); //randomly reorders the list elements using specified randomness
+    }
+    public boolean isEmpty () {
+        return tiles.size() == 0;
+    } 
+    public int getRemaining() { //this method is useful for the testing part
+        return tiles.size();
     }
     public ArrayList <Tile> getTiles() {
     	return tiles;
     }
-    private void addTiles (int count, String name, int score) {
-        for (int i=0; i<count; i++) {
-            tiles.add(new Tile(name,score));
-        }
-    }
-
-    public Tile pick () {
-        if (tiles.isEmpty()) {
-            return null;
-        }
-        return tiles.remove(random.nextInt(tiles.size()));
-
+    public Tile pickup() throws NoTilesInBagException{
+    	if (tiles.size() <= 0) {
+    		throw new NoTilesInBagException("Thera are no other tiles in the bad!");
+    	}
+	    Tile t = tiles.get(0);
+	    tiles.remove(0);
+	    return t;
     }
 }

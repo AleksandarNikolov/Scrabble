@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+import application.Board.Direction;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import wordchecker.InMemoryScrabbleWordChecker;
@@ -94,24 +95,41 @@ public class Main extends Application {
 				String input = sc.nextLine();
 				ArrayList<String> command = new ArrayList<>();
 				input.split(" ");
+				command.add(input);
 
 				if (command.size() > 3) {
 					throw new Exception("invalid input");
-				} else if (command.get(1).contains(Integer))
+				} else if (equalsNumber(command.get(1))) {
+					throw new Exception("must be only letters");
+				}
 
-					// if make move
-					if (command.get(1).equals("Place")) {
-						String word = command.get(1);
-						String position = command.get(2);
-						players.get(currentPlayerIndex).makeMove(word, position); // to do makeMove(String word, String
+				// if make move
+				if (command.get(1).equals("Place")) {
+					String word = command.get(1);
+					String position = command.get(2);
+					Direction dir;
+
+					try {
+						if (command.get(3) == "H") {
+							Direction dir1 = Direction.HORIZONTAL;
+							dir = dir1;
+						} else if (command.get(3) == "V") {
+							Direction dir1 = Direction.VERTICAL;
+							dir = dir1;
+						}
+					} catch (Exception e) {
+						System.out.println("Must specify Vertical or Horzizontal with V or H");
+					}
+
+					players.get(currentPlayerIndex).makeMove(word, position, dir); // to do makeMove(String word, String
 																					// position){
 
-						players.get(currentPlayerIndex).setCurrentScore(currentPlayerIndex); // to do
+					players.get(currentPlayerIndex).setCurrentScore(currentPlayerIndex); // to do
 
-						players.get(currentPlayerIndex).getScore();
+					players.get(currentPlayerIndex).getScore();
 
-						board.toString(); // to do
-					}
+					board.toString(); // to do
+				}
 
 				if (currentPlayerIndex == 0) {
 					currentPlayerIndex = 1;
@@ -120,19 +138,43 @@ public class Main extends Application {
 				}
 
 				// if skip turn
-				else if (command[0] == "Skip") {
-					ArrayList<String> tilesToReplace = null;
-					for (int i = 1; i < command.length; i++) {
-						tilesToReplace.add(command[i]);
-					}
-					players.get(currentPlayerIndex).skipTurn(tilesToReplace); // to do
-				}
+				else if (command.get(0) == "Skip") {
 
+					skipTurn(command);/////////////Question
+
+				}
 			} catch (Exception e) {
 				System.out.println("invalid input");
 			}
-
 		}
+	}
+
+	public void skipTurn(ArrayList<String> command) {
+
+		ArrayList<Character> tilesToReplace = new ArrayList<Character>();
+
+		for (int i = 1; i < command.size(); i++) {
+			tilesToReplace.add(((CharSequence) command).charAt(i));
+			for (int j = 0; j < tilesToReplace.size(); j++) {
+				players.get(currentPlayerIndex).getDeck().sacrificeTile(tilesToReplace.get(i), availableTiles);
+				if (currentPlayerIndex == 0) {
+					currentPlayerIndex = 1;
+				} else if (currentPlayerIndex == 1) {
+					currentPlayerIndex = 0;
+
+				}
+
+			}
+		}
+	}
+
+	public static boolean equalsNumber(Object obj) {
+
+		if (!(obj instanceof String)) {
+			return true;
+		}
+
+		return false;
 
 	}
 
@@ -172,36 +214,5 @@ public class Main extends Application {
 
 	private int calculateWordPoints(int direction, Square square, Board board, List<TilePlacements> placements) {
 	}
-
-	@Override
-	public void start(Stage arg0) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * @Override public void start(Stage primaryStage) throws Exception {
-	 * 
-	 * BorderPane root = new BorderPane(); Scene scene = new
-	 * Scene(root,880,880,Color.SADDLEBROWN); Stage stage = new Stage();
-	 * 
-	 * Image icon = new Image("icon.png",50,50, true, false);
-	 * stage.getIcons().add(icon); stage.setTitle("Scrabble");
-	 * 
-	 * /** Image image = new Image("word.png"); ImageView imageView = new
-	 * ImageView(image); imageView.setX(400); imageView.setY(400);
-	 */
-
-	/**
-	 * Text text = new Text(); text.setText("Scrabble"); text.setX(50);
-	 * text.setY(50); text.setFont(Font.font("Verdana",50));
-	 * text.setFill(Color.WHITESMOKE);
-	 */
-
-	/**
-	 * Line line = new Line(); line.setStartX(200); line.setStartY(250);
-	 * line.setEndX(300); line.setEndY(250); line.setStrokeWidth(5);
-	 * line.setStroke(Color.RED); line.setOpacity(0.5); line.setRotate(45);
-	 */
 
 }
