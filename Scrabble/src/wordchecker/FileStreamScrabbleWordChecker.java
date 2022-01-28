@@ -30,7 +30,7 @@ public class FileStreamScrabbleWordChecker implements  ScrabbleWordChecker{
 
                     // Return a WordResponse when the word is found in the file
                     if (splitLine.length == 2 && word.equals(splitLine[0])) {
-                        return new WordResponse(splitLine[0], splitLine[1]);
+                        return new WordResponse(splitLine[0]);
                     }
                 }
             }

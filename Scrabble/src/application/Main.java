@@ -16,22 +16,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import wordchecker.InMemoryScrabbleWordChecker;
 import wordchecker.ScrabbleWordChecker;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-
-public class Main extends Application {
+public class Main {
 
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 0;
+	public static final int MAXTURNS = 4;
 
 	private ArrayList<Tile> availableTiles;
 	private Board board;
@@ -39,8 +28,6 @@ public class Main extends Application {
 
 	private Map<Player, List<Tile>> decks = new HashMap<>();
 	private Map<Player, Integer> scores = new HashMap<>();
-
-	private ScrabbleWordChecker scrabbleWordChecker = new InMemoryScrabbleWordChecker();
 	private int currentPlayerIndex;
 
 	public static void main(String[] args) throws IOException, Exception {
@@ -77,20 +64,22 @@ public class Main extends Application {
 			player.setDeck(deck);
 		}
 
-		// Generate a board
-		Board board = new Board();
-		board.reset();
-		board.toString(); // to do
-
 		// Start playing
 		// Randomly select starting player
 		Random r = new Random();
 		int currentPlayerIndex = r.nextInt(players.size());
 
 		while (running) {
+			int counter = 0;
+			counter ++;
 
 			// split input for move and skip
 			try {
+				// Generate a board
+				Board board = new Board();
+				board.reset();
+				board.toString(); // to do
+				players.get(currentPlayerIndex).getDeck().toString();
 				System.out.println("Player" + currentPlayerIndex + 1 + " make your move:");
 				String input = sc.nextLine();
 				ArrayList<String> command = new ArrayList<>();
@@ -107,7 +96,7 @@ public class Main extends Application {
 				if (command.get(1).equals("Place")) {
 					String word = command.get(1);
 					String position = command.get(2);
-					Direction dir;
+					Direction dir = null;
 
 					try {
 						if (command.get(3) == "H") {
@@ -120,15 +109,15 @@ public class Main extends Application {
 					} catch (Exception e) {
 						System.out.println("Must specify Vertical or Horzizontal with V or H");
 					}
-
-					players.get(currentPlayerIndex).makeMove(word, position, dir); // to do makeMove(String word, String
-																					// position){
+					ScrabbleWordChecker scrabbleWordChecker = new InMemoryScrabbleWordChecker();
+					players.get(currentPlayerIndex).makeMove(word, position, dir ,board,players.get(currentPlayerIndex),scrabbleWordChecker);
 
 					players.get(currentPlayerIndex).setCurrentScore(currentPlayerIndex); // to do
 
 					players.get(currentPlayerIndex).getScore();
-
+					players.get(currentPlayerIndex).getDeck().toString();
 					board.toString(); // to do
+					
 				}
 
 				if (currentPlayerIndex == 0) {
@@ -140,13 +129,33 @@ public class Main extends Application {
 				// if skip turn
 				else if (command.get(0) == "Skip") {
 
-					skipTurn(command);/////////////Question
+					players.get(currentPlayerIndex).skipTurn(command);/////////////Question
+					
+					
+					if (currentPlayerIndex == 0) {
+						currentPlayerIndex = 1;
+					} else if (currentPlayerIndex == 1) {
+						currentPlayerIndex = 0;
+					}
 
 				}
 			} catch (Exception e) {
 				System.out.println("invalid input");
 			}
+			
+			if(counter == MAXTURNS) {
+				running = false;
+			}
 		}
+		int score1 = players.get(0).getScore();
+		int score2 = players.get(1).getScore();
+		if(score1>score2) {
+			System.out.println("Game over , winner is: " + players.get(0).getName());
+			
+		}else if (score2>score1) {
+			System.out.println("Game over , winner is: " + players.get(1).getName());
+		}else
+		System.out.println("Game over , there is no winner");
 	}
 
 	public void skipTurn(ArrayList<String> command) {
@@ -182,11 +191,11 @@ public class Main extends Application {
 		return board;
 	}
 
-	public int calculateScore(List<TilePlacement> placements) {
-	}
+	//public int calculateScore(List<TilePlacement> placements) {
+	//}
 
-	public int doMove(List<TilePlacement> placements, Player player) {
-	}
+//	public int doMove(List<TilePlacement> placements, Player player) {
+//	}
 
 	public Player getCurrentPlayer() {
 		return players.get(this.currentPlayerIndex);
@@ -212,7 +221,8 @@ public class Main extends Application {
 		return score;
 	}
 
-	private int calculateWordPoints(int direction, Square square, Board board, List<TilePlacements> placements) {
-	}
+
+	///private int calculateWordPoints(int direction, Square square, Board board, List<TilePlacements> placements) {
+	//}
 
 }

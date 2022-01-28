@@ -37,9 +37,9 @@ public class Deck{
     	return deck;
     }
     //Take out a tile of a certain letter
-    public Tile getTile(String letter) {
+    public Tile getTile(char letter) {
        for(int i = 0; i < 7; i++) {
-          if(deck.get(i) != null  && letter.equals(deck.get(i).getLetter())) {   //Tile is not null and equal to letter value
+          if(deck.get(i) != null  && letter == (deck.get(i).getLetter())) {   //Tile is not null and equal to letter value
              Tile temp = deck.get(i); //Set temp equal to the tile value
              deck.remove(i);   //Set the deck at index equal to null
              return temp;      //Return the temp value
@@ -49,9 +49,9 @@ public class Deck{
     }
     
     //Check to see if the deck contains a certain letter
-    public boolean hasLetter(String letter) {
+    public boolean hasLetter(char letter) {
        for(int i = 0; i < 7; i++) { 
-          if(deck.get(i) != null  && letter.equals(deck.get(i).getLetter())) {   //Deck value is not null and letter is equal to tile letter
+          if(deck.get(i) != null  && letter == (deck.get(i).getLetter())) {   //Deck value is not null and letter is equal to tile letter
              return true;   //Return true
           }
        }

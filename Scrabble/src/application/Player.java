@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import application.Board.Direction;
+import wordchecker.InMemoryScrabbleWordChecker;
 import wordchecker.ScrabbleWordChecker;
 
 /**
@@ -13,7 +14,7 @@ public class Player {
 
 	public String name;
 	private int id;
-	public Score score;
+	public int score;
 	private Deck deck;
 	private int currentScore;
 	private Player[] players;
@@ -63,8 +64,8 @@ public class Player {
 	/**
 	 * Returns the score of the player.
 	 */
-	public Score getScore() {
-		return score;
+	public int getScore() {
+		return this.score;
 	}
 
 	/**
@@ -103,28 +104,29 @@ public class Player {
      * Makes a move on the board. <br>
      * @requires board is not null and not full
      * @param board the current board
+	 * @throws Exception 
      */
-    public void makeMove(String word, String position, Direction dir) {
+    public void makeMove(String word, String position, Direction dir,Board board,Player player,ScrabbleWordChecker scrabbleWordChecker) throws Exception {
     	
     	char [] letters = splitWord(word)	;
-    	String [] positions = splitPosition(position);
+    	int [] positions = splitPosition(position);
     
     	//check if valid word
-    	if(ScrabbleWordChecker.isValidWord(word).equals(word)) {
+    	if(scrabbleWordChecker.isValidWord(word).equals(word)) {
     	//check if word is part of players deck	
-    	for(int i = 0 ; i < letter.length; i++) {
-    		if(currentPlayerIndex.getDeck.hasLetter(letters[i])) {
+    	for(int i = 0 ; i < letters.length; i++) {
+    		if(player.getDeck().hasLetter(letters[i])) {
     			//check if move is made horizontally
     			if(dir == Direction.HORIZONTAL) {
-    		    	for(int i = 0 ; i < word.length();i++) {
-    		    		//add tile with letter in position i of letters[]
-    		    		squares.getSquare(position[i],position[1]).setTile[letters[i]];
+    		    	for(int j = 0 ; j < word.length();j++) {
+    		    		//add tile with letter in position i of letters[}
+    		    		board.getSquare(positions[i],positions[1]).setTile(deck.getTile(letters[i]));
     		    	}
     		    	//check if move is made vertically
     		    	}else if(dir == Direction.VERTICAL) {
-    		    		for(int i = 0 ; i < word.length();i++) {
+    		    		for(int k = 0 ; k < word.length();k++) {
     		    			//add tile with letter in position i of letters[]
-    		        		squares.getSquare(position[0],position[i]).setTile[letters[i]];
+    		    			board.getSquare(positions[1],positions[k]).setTile(player.getDeck().getTile(letters[i]));
     		        	}
     		    	}else throw new Exception("Move invalid");
     		    }else throw new Exception("Letters not in deck");
@@ -141,12 +143,49 @@ public class Player {
 		return letters;
 	}
 
-	public String[] splitPosition(String position) {
+	public int[] splitPosition(String position) {
 		String str = position;
+		int [] positions = null;
 		String[] part = str.split("(?<=\\D)(?=\\d)");
-		System.out.println(part[0]);
-		System.out.println(part[1]);
-		return part;
+		
+		try {
+			if(part[0].equals("A")){
+				positions[0] = 1;
+			}if(part[0].equals("B")){
+				positions[0] = 2;
+			}if(part[0].equals("C")){
+				positions[0] = 3;
+			}if(part[0].equals("D")){
+				positions[0] = 4;
+			}if(part[0].equals("E")){
+				positions[0] = 5;
+			}if(part[0].equals("F")){
+				positions[0] = 6;
+			}if(part[0].equals("G")){
+				positions[0] = 7;
+			}if(part[0].equals("H")){
+				positions[0] = 8;
+			}if(part[0].equals("I")){
+				positions[0] = 9;
+			}if(part[0].equals("J")){
+				positions[0] = 10;
+			}if(part[0].equals("K")){
+				positions[0] = 11;
+			}if(part[0].equals("L")){
+				positions[0] = 12;
+			}if(part[0].equals("M")){
+				positions[0] = 13;
+			}if(part[0].equals("N")){
+				positions[0] = 14;
+			}if(part[0].equals("O")){
+				positions[0] = 15;
+			}
+		}catch (Exception e) {
+			System.out.println("invalid input");
+		}
+		positions[1] = Integer.parseInt(part[1]);
+		
+		return positions;
 	}
 
 	public void skipTurn(ArrayList<String> tilesToReplace) {
@@ -154,7 +193,7 @@ public class Player {
 
 	}
 	
-	public Score calculateScore() {
+	public int calculateScore() {
 		
 		
 		

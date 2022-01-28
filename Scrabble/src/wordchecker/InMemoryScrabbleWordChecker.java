@@ -29,7 +29,7 @@ public class InMemoryScrabbleWordChecker implements  ScrabbleWordChecker{
                 while ((line = br.readLine()) != null) {
                     String[] splitLine = line.split("\t");
                     if (splitLine.length == 2) {
-                        words.put(splitLine[0], new WordResponse(splitLine[0], splitLine[1]));
+                        words.put(splitLine[0], new WordResponse(splitLine[0]));
                     }
                 }
             }
