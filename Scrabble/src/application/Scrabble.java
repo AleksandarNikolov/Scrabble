@@ -12,12 +12,10 @@ import java.util.Random;
 import java.util.Scanner;
 
 import application.Board.Direction;
-import javafx.application.Application;
-import javafx.stage.Stage;
 import wordchecker.InMemoryScrabbleWordChecker;
 import wordchecker.ScrabbleWordChecker;
-public class Main {
-
+public class Scrabble {
+//if all players skip game ends.
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 0;
 	public static final int MAXTURNS = 4;
@@ -30,7 +28,7 @@ public class Main {
 	private Map<Player, Integer> scores = new HashMap<>();
 	private int currentPlayerIndex;
 
-	public static void main(String[] args) throws IOException, Exception {
+	public static void main(String[] args)  {
 		boolean running = true;
 
 		// Assign players to game
