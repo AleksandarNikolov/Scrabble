@@ -1,13 +1,9 @@
 package wordchecker;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * A Scrabble Word Checker, which walks through the words file on every check.
  * This this uses less memory, but more IO
@@ -21,7 +17,7 @@ public class FileStreamScrabbleWordChecker implements  ScrabbleWordChecker{
 
         try {
             // Open the words files
-            InputStream resourceStream = FileStreamScrabbleWordChecker.class.getResourceAsStream("/collins_scrabble_words_2019.txt");
+            InputStream resourceStream = FileStreamScrabbleWordChecker.class.getResourceAsStream("/WordList.txt");
             try (BufferedReader br = new BufferedReader(new InputStreamReader(resourceStream))) {
                 String line;
                 // Walk through the file
@@ -30,7 +26,7 @@ public class FileStreamScrabbleWordChecker implements  ScrabbleWordChecker{
 
                     // Return a WordResponse when the word is found in the file
                     if (splitLine.length == 2 && word.equals(splitLine[0])) {
-                        return new WordResponse(splitLine[0]);
+                        return new WordResponse(splitLine[0], splitLine[1]);
                     }
                 }
             }

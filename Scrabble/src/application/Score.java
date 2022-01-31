@@ -1,33 +1,52 @@
 package application;
 
-import java.util.ArrayList;
+/**
+ * Class for Score in Scrabble
+ * 
+ * @author 	Aleksandar Nikolov and Andrei Cohan
+ */
 
+/*
+ * Used to store the players score throughout the game
+ * Used at the end to determine winner
+ */
 public class Score {
 
-	private ArrayList<Tile> placements = new ArrayList<>();
 	private int score;
 	private int multiplier;
 	private int addFactor;
 	
+	/*
+	 * Score constructor 
+	 * @ensures starting score is 0
+	 */
 	public Score() {
 		score = 0;
-		multiplier = 1;
-		addFactor = 0;
+		//multiplier = 1;
+		//addFactor = 0;
 	}
-	//gets the current's turn score
+	
+	/*
+	 * returns the score for the current turn
+	 */
 	public int getScore() {
 		return score;
 	}
-	//sets the score
+	
+	
+	/*
+	 * set score to a specified value
+	 * @requires newScore > score
+	 * @ensures score = newScore
+	 */
 	public void setScore(int newScore) {
 		this.score = newScore;
 	}
-	//gets the score computed with the use of special tiles
+	
+	/*
+	 * computes the score taking into account the square multipliers
+	 */
 	public int getComputedScore() {
 		return (score + addFactor) * multiplier;
 	}
-	public void add(Tile letter) {
-		placements.add(letter);
-	}
-
 }

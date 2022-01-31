@@ -23,13 +23,13 @@ public class InMemoryScrabbleWordChecker implements  ScrabbleWordChecker{
      */
     static {
         try {
-            InputStream resourceStream = InMemoryScrabbleWordChecker.class.getResourceAsStream("/collins_scrabble_words_2019.txt");
+            InputStream resourceStream = InMemoryScrabbleWordChecker.class.getResourceAsStream("/WordList.txt");
             try (BufferedReader br = new BufferedReader(new InputStreamReader(resourceStream))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] splitLine = line.split("\t");
                     if (splitLine.length == 2) {
-                        words.put(splitLine[0], new WordResponse(splitLine[0]));
+                        words.put(splitLine[0], new WordResponse(splitLine[0], splitLine[1]));
                     }
                 }
             }

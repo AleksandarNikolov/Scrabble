@@ -1,110 +1,124 @@
 package application;
 
-import java.awt.Color;
+import exceptions.OutOfBoundsException;
 
 /**
  * Class for Square in Scrabble
  * 
- * @author 	Aleksandar Nikolov and Andrei Cohan
+ * @author Aleksandar Nikolov and Andrei Cohan
  */
 
+/*
+ * The board is made of a 2 dimensional array of Squares All the values of the
+ * square are stored here
+ */
 public class Square {
-	
+
 	private int posX;
 	private int posY;
 	private SquareType type;
-	private Tile letter = null;
-	public Color color;
-	
-	
+	private Tile tile = null;
+
 	/**
 	 * Constructor for the tiles.
+	 * 
 	 * @requires posX,PosY,multiplier,forWord.
 	 * @param posX
 	 * @param posY
 	 * @param multiplier
 	 * @param forWord
 	 */
-	
-	public Square(int posX,int posY, SquareType type) {
+
+	public Square(int posX, int posY, SquareType type) {
 		this.posX = posX;
 		this.posY = posY;
 		this.type = type;
-		
+
 	}
 
-	public Square getSquare(int x, int y) throws Exception {
-		if (x < 0 || x >= 15 || y < 0 || y >= 15) {
-			throw new Exception("Square out of bounds!");
+	public Square getSquare(int x, int y) throws OutOfBoundsException {
+		if (x < 0 || x >= 16 || y < 0 || y >= 16) {
+			throw new OutOfBoundsException("The requested square is out of the bounds of the board");
 		}
 		return this;
 	}
 	
-	
 	/**
-	 * @return the posY
-	 */
-	public int getPosY() {
-		return posY;
-	}
-
-	/**
-	 * @param posY the posY to set
-	 */
-	public void setPosY(int posY) {
-		this.posY = posY;
-	}
-
-	/**
-	 * @return the posX
+	 * @return the X position
 	 */
 	public int getPosX() {
 		return posX;
 	}
 
 	/**
-	 * @param posX the posX to set
+	 * @param set the X position
 	 */
 	public void setPosX(int posX) {
 		this.posX = posX;
 	}
 
-	public SquareType getType() {
-        return type;
-    }
+	/**
+	 * @return the Y position
+	 */
+	public int getPosY() {
+		return posY;
+	}
 
 	/**
-	 * @return the hasPiece
+	 * @param set the Y position
+	 */
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
+
+	public SquareType getType() {
+		return type;
+	}
+
+	/**
+	 * @return true if the square has no tile on it
 	 */
 	public boolean isEmpty() {
-		return letter == null;
+		return tile == null;
 	}
-	
-	public void setTile(Tile letter) {
-		this.letter = letter;
+
+	/*
+	 * add a tile to the square
+	 */
+	public void setTile(Tile tile) {
+		this.tile = tile;
 	}
+
+	/*
+	 * @return the tile of this square
+	 */
 	public Tile getTile() {
-		return this.letter;
+		return this.tile;
 	}
 
+	/*
+	 * returns the word multiplier of the square
+	 */
 	public int getWordMultiplier() {
-        if (type == SquareType.DOUBLE_WORD || type == SquareType.CENTRAL_SQUARE) {
-        	return 2;
-        }
-        
-        if (type == SquareType.TRIPLE_WORD) {
-        	return 3;
-        }
-        return 1;
-    }
-	public int getLetterMultiplier() {
-        if (type == SquareType.DOUBLE_LETTER) {
-        	return 2;
-        }
-        if (type == SquareType.TRIPLE_LETTER) {
-        	return 3;
-        }
-        return 1;
-    }
+		if (type == SquareType.TRIPLE_WORD) {
+			return 3;
+		}
+		if (type == SquareType.DOUBLE_WORD || type == SquareType.CENTRAL_SQUARE) {
+			return 2;
+		}
+		return 1;
+	}
 
+	/*
+	 * returns the letter multiplier of the square
+	 */
+	public int getLetterMultiplier() {
+		if (type == SquareType.TRIPLE_LETTER) {
+			return 3;
+		}
+		if (type == SquareType.DOUBLE_LETTER) {
+			return 2;
+		}
+		return 1;
+	}
 }

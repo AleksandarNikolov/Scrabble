@@ -16,9 +16,9 @@ public interface ScrabbleWordChecker {
      * Contains the actual word, together with a description of the word according to the collins scrabble Dicitonary
      */
     class WordResponse {
-        public WordResponse(String word){
+        public WordResponse(String word, String description){
             this.word = word;
-           
+            this.description = description;
         }
 
         public String getWord(){

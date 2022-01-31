@@ -1,5 +1,4 @@
 package wordchecker;
-
 import java.util.Scanner;
 
 /**

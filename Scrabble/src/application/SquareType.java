@@ -1,5 +1,14 @@
 package application;
 
+/**
+ * Class for SquareType in scrabble
+ * 
+ * @author 	Aleksandar Nikolov and Andrei Cohan
+ */
+
+/*
+ * An enum is used to denote each square type
+ */
 public enum SquareType {
 	
 	PLAIN (1),
@@ -9,20 +18,23 @@ public enum SquareType {
 	TRIPLE_WORD(3),
 	CENTRAL_SQUARE(2);
 	
-	private final int multiplier;
+	private int multiplier;
 	
 	SquareType(int multiplier) {
 		this.multiplier = multiplier;
 	}
 	
-	public static void main(String[] args) {
-		for(SquareType x : SquareType.values()) { // this method values() converts different types of value into strings
-			System.out.printf("A %s cell has a multiplier of %d.%n", x, x.multiplier());
-		}
+	public int multiplier() {
+		return multiplier;
 	}
 	
-	private int multiplier() {
-		return multiplier;
+	/*
+	 * this method values() converts different types of value into strings
+	 */
+	public static void main(String[] args) {
+		for(SquareType x : SquareType.values()) { 
+			System.out.printf("A %s cell has a multiplier of %d.%n", x, x.multiplier());
+		}
 	}
 	
 }
