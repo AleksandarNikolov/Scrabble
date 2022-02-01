@@ -80,17 +80,6 @@ public class Deck {
 		}
 	}
 
-	/*
-	 * check to see if the deck has a certain letter
-	 */
-	public boolean hasLetter(char letter) {
-		for (int i = 0; i < 7; i++) {
-			if (deck.get(i) != null && letter == (deck.get(i).getLetter())) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/*
 	 * set a specific index of the deck to a specific tile

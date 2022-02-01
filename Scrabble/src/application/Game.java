@@ -18,6 +18,7 @@ import exceptions.CommandLineException;
 import exceptions.LowerCaseException;
 import exceptions.NoTilesInBagException;
 import exceptions.OutOfBoundsException;
+import exceptions.PlacementException;
 import exceptions.TilesNotInDeckException;
 import exceptions.WordListException;
 import wordchecker.FileStreamScrabbleWordChecker;
@@ -63,25 +64,15 @@ public class Game {
 
 	}
 
-	public void skipTurn(ArrayList<String> command, Bag bag) {
-
-		ArrayList<Character> tilesToReplace = new ArrayList<Character>();
-
-		for (int i = 1; i < command.size(); i++) {
-			tilesToReplace.add(((CharSequence) command).charAt(i));
-			for (int j = 0; j < tilesToReplace.size(); j++) {
-				players.get(currentPlayerIndex).getDeck().discardTile(tilesToReplace.get(i), bag.getTiles());
-				if (currentPlayerIndex == 0) {
-					currentPlayerIndex = 1;
-				} else if (currentPlayerIndex == 1) {
-					currentPlayerIndex = 0;
-
-				}
-				turn++;
-			}
-		}
-	}
-
+	/**
+	 * 
+	 * @param command
+	 * @return true if the word to place is adjacent to any other word or letter.
+	 *         Requirement in scrabble rules.
+	 * @return false if the word to place is not adjacent to any other word or
+	 *         letter.
+	 * @throws Exception
+	 */
 	public boolean checkAdjacent(String[] command) throws Exception {
 		int notAdjasentCount = 0;
 		int adjasentCount = 0;
@@ -96,8 +87,9 @@ public class Game {
 		int[] positions = splitPosition(position);
 		int x = positions[0];
 		int y = positions[1];
-
 		Direction direction;
+
+		// if its the first turn the the first tile must be placed on the center square.
 		if (turn == 1 && x == 8 && y == 8) {
 			return true;
 
@@ -106,6 +98,9 @@ public class Game {
 			System.out.println("On the first turn you must place the first tile in the center ");
 		} else if (dir == "H") {
 			direction = Direction.HORIZONTAL;
+			// check for every tile in the word.
+			// ceck that every tile adjacent to this tile, either doenst have a tile or is
+			// off the board.
 			for (int i = 0; i < word.length(); i++) {
 
 				if (!(board.getSquare((x + 1), y).getTile() == null) || !(board.isField(x, y))) {
@@ -141,7 +136,8 @@ public class Game {
 				y++;
 			}
 		}
-
+		// if there is a single adjacent tile
+		// you can place here
 		if (adjasentCount > 0) {
 			return true;
 		} else
@@ -150,6 +146,7 @@ public class Game {
 		return false;
 	}
 
+	// checks the word with an inMemoryScrabbleWordCheker
 	public boolean checkWord(String[] command) {
 		ScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
 		String word = command[1];
@@ -165,22 +162,23 @@ public class Game {
 
 	}
 
+	// check that the command that was inputed is correct
 	public boolean checkCommandLinePlace(String[] command) throws CommandLineException {
 		// error counters
 		int count = 0;
 		int wordError = 0;
 
 		// generate command parameters
-		String commandString = command[0];
+		String choice = command[0];
 		String word = command[1];
 		String position = command[2];
 		String dir = command[3];
 
-		// check command
-		if (commandString.equals("PLACE")) {
+		// check choice
+		if (choice.equals("PLACE")) {
 			count++;
 		}
-		if (commandString.equals("SKIP")) {
+		if (choice.equals("SKIP")) {
 			count++;
 		}
 
@@ -192,57 +190,55 @@ public class Game {
 				// throw new CommandLineException("Problem with word input");
 				System.out.println("Problem with word input");
 				wordError = wordError + 1;
-			
+
 			}
-			
+
 		}
 		if (wordError == 0) {
 			count = count + 1;
-			
+
 		}
 
-			// check if position is valid
+		// check if position is valid
 
-			String[] part = position.split("(?<=\\D)(?=\\d)");
+		String[] part = position.split("(?<=\\D)(?=\\d)");
 
-			// check letter
-			char letter = part[0].charAt(0);
-			if (!Character.isUpperCase(letter) || Character.isDigit(letter))
-				// throw new CommandLineException("Position input is incorrect");
-				System.out.println("Position input is incorrect");
-			else
-				count = count + 1;
-			
+		// check letter
+		char letter = part[0].charAt(0);
+		if (!Character.isUpperCase(letter) || Character.isDigit(letter))
+			// throw new CommandLineException("Position input is incorrect");
+			System.out.println("Position input is incorrect");
+		else
+			count = count + 1;
 
-			// check number
-			String number = part[1];
-			int[] numberInt = new int[1];
-			numberInt[0] = Integer.parseInt(number);
-			if ((numberInt[0] % 1 == 0)) {
+		// check number
+		String number = part[1];
+		int[] numberInt = new int[1];
+		numberInt[0] = Integer.parseInt(number);
+		if ((numberInt[0] % 1 == 0)) {
 
-				count = count + 1;
-				
-			} else
-				// throw new CommandLineException("Position input is incorrect");
-				System.out.println("Position input is incorrect");
+			count = count + 1;
 
-			// check direction
+		} else
+			// throw new CommandLineException("Position input is incorrect");
+			System.out.println("Position input is incorrect");
 
-			if (dir.equals("H") || dir.equals("V")) {
-				count = count + 1;
-				
-			} else
-				// throw new CommandLineException("Problem with word input");
-				System.out.println("Problem with word input");
+		// check direction
 
-			// return true or false
-			if (count == 5) {
-				
-			
-				return true;
-			} else
-				return false;
-		}
+		if (dir.equals("H") || dir.equals("V")) {
+			count = count + 1;
+
+		} else
+			// throw new CommandLineException("Problem with word input");
+			System.out.println("Problem with word input");
+
+		// return true or false
+		if (count == 5) {
+
+			return true;
+		} else
+			return false;
+	}
 
 	public boolean checkCommandLineSkip(String[] command) throws LowerCaseException, CommandLineException {
 
@@ -260,19 +256,18 @@ public class Game {
 		String StringTilesToSwap = cleanTilesToSwap[0].toString();
 		char[] individualTilesToSwap = splitWord(StringTilesToSwap);
 
+		// for each letter in the word. check that they are formated correctly
 		for (int i = 0; i < individualTilesToSwap.length; i++) {
 			if (!Character.isUpperCase(individualTilesToSwap[i]) || Character.isDigit(individualTilesToSwap[i])) {
 				System.out.println(" tile");
 				tileError = tileError + 1;
-				//throw new CommandLineException("Problem with tiles input");
+				// throw new CommandLineException("Problem with tiles input");
 			}
 
 		}
 		if (tileError == 0) {
 			count = count + 1;
 		}
-		
-		
 
 		// tilesToSwap must be only UPPERCASE letters divided by a ","
 		if (tilesToSwap.toLowerCase() != null && !tilesToSwap.contains(",")) {
@@ -288,6 +283,8 @@ public class Game {
 
 	}
 
+	// changes the position input from a string for a character and a number to an
+	// int array of positions
 	public int[] splitPosition(String position) {
 		String str = position;
 		int[] positions = new int[15];
@@ -347,6 +344,7 @@ public class Game {
 		return positions;
 	}
 
+	// splits the word into a char array of letters
 	public char[] splitWord(String word) {
 		char[] letters = new char[word.length()];
 		for (int i = 0; i < word.length(); i++) {
@@ -356,6 +354,7 @@ public class Game {
 		return letters;
 	}
 
+	// place a word at the given position with the given direction
 	public void place(String[] command, Player player)
 			throws TilesNotInDeckException, AlreadyPlacedException, Exception {
 
@@ -378,92 +377,122 @@ public class Game {
 		 * if splitWord position on board must be free and the length of the word must
 		 * not go out of bound all positions that the word will occupy must be free
 		 */
+		System.out.println(checkWordInDeck(word, player));
+		System.out.println(checkSquaresUnocuppied(command, player));
+		System.out.println(containsUsefullTile(command, player) != null);
 		if (checkWordInDeck(word, player)
 				&& (checkSquaresUnocuppied(command, player) || containsUsefullTile(command, player) != null)) {
+
 			int[] usefullTile = containsUsefullTile(command, player);
-
+			// for vertical placement
 			if (dir.equals("V")) {
+				// place first letter
 				board.getSquare(x, y).setTile(player.getDeck().getTile(letters[0]));
-
+				// get the value of the letter and the multiplier of the tile
 				multiplierL = multiplierL * board.getSquare(x, y).getLetterMultiplier();
 				multiplierW = multiplierL * board.getSquare(x, y).getWordMultiplier();
+				// add it up into a score for the tile
 				score += (player.getDeck().getTile(letters[0]).getValue()) * multiplierL;
+
+				// if the tile is a useful tile, dont remove it from the deck.
+				// this is because the correct letter is already on that specific square
+				if (usefullTile[0] != 0) {
+					player.getDeck().removeTile(player.getDeck().getTile(letters[0]));
+				}
+
+				// place for the remaning letters
+				for (int i = 1; i < word.length(); i++) {
+					board.getSquare((x - i), y).setTile(player.getDeck().getTile(letters[i]));
+
+					// get the value of the letter and the multiplier of the tile
+					multiplierL = multiplierL * board.getSquare(x, y).getLetterMultiplier();
+					multiplierW = multiplierL * board.getSquare(x, y).getWordMultiplier();
+
+					// add it all up into a score for the tile
+					score += (player.getDeck().getTile(letters[i]).getValue()) * multiplierL;
+
+					// if the tile is a useful tile, dont remove it from the deck.
+					// this is because the correct letter is already on that specific square
+					if (usefullTile[i] != i) {
+						player.getDeck().removeTile(player.getDeck().getTile(letters[i]));
+					}
+				}
+				// for horizontal placement
+			} else {
+				// place first lettter
+				board.getSquare(x, y).setTile(player.getDeck().getTile(letters[0]));
+				// get the value of the letter and the multiplier of the tile
+				multiplierL = multiplierL * board.getSquare(x, y).getLetterMultiplier();
+				multiplierW = multiplierL * board.getSquare(x, y).getWordMultiplier();
+
+				// add it all up into a score for the tile
+				score += (player.getDeck().getTile(letters[0]).getValue()) * multiplierL;
+
+				// if the tile is a useful tile, dont remove it from the deck.
+				// this is because the correct letter is already on that specific square
 
 				if (usefullTile[0] != 0) {
 					player.getDeck().removeTile(player.getDeck().getTile(letters[0]));
 				}
 
 				for (int i = 1; i < word.length(); i++) {
-					board.getSquare((x - 1), y).setTile(player.getDeck().getTile(letters[i]));
-
+					board.getSquare(x, (y + i)).setTile(player.getDeck().getTile(letters[i]));
+					// get the value of the letter and the multiplier of the tile
 					multiplierL = multiplierL * board.getSquare(x, y).getLetterMultiplier();
 					multiplierW = multiplierL * board.getSquare(x, y).getWordMultiplier();
+
+					// add it all up into a score for the tile
 					score += (player.getDeck().getTile(letters[i]).getValue()) * multiplierL;
+
+					// if the tile is a useful tile, dont remove it from the deck.
+					// this is because the correct letter is already on that specific square
 
 					if (usefullTile[i] != i) {
 						player.getDeck().removeTile(player.getDeck().getTile(letters[i]));
 					}
 				}
-			} else {
-				board.getSquare(x, y).setTile(player.getDeck().getTile(letters[0]));
-
-			multiplierL = multiplierL * board.getSquare(x, y).getLetterMultiplier();
-			multiplierW = multiplierL * board.getSquare(x, y).getWordMultiplier();
-			score += (player.getDeck().getTile(letters[0]).getValue()) * multiplierL;
-
-			if (usefullTile[0] != 0) {
-				player.getDeck().removeTile(player.getDeck().getTile(letters[0]));
 			}
-			for (int i = 1; i < word.length(); i++) {
-				board.getSquare(x, (y + 1)).setTile(player.getDeck().getTile(letters[i]));
-
-				multiplierL = multiplierL * board.getSquare(x, y).getLetterMultiplier();
-				multiplierW = multiplierL * board.getSquare(x, y).getWordMultiplier();
-				score += (player.getDeck().getTile(letters[i]).getValue()) * multiplierL;
-
-				if (usefullTile[i] != i) {
-					player.getDeck().removeTile(player.getDeck().getTile(letters[i]));
-				}
-			}
-			}
-
+			//add up the final score of this number
+			//the letter multipliers are multiplied by the letter values
+			//the word multipliers are multiplied together
+			//at the end we just multiply the added up score from all the letters with the word multiplier
+			//if there was no special tile for example, the world multipler will just be 1
 			score = score * multiplierW;
 			player.setCurrentScore(score);
 
+			//refil the deck of the player with new tiles from the bag
 			player.getDeck().refillDeck(bag.getTiles());
 
-		
 		}
-
-		/*
-		 * place the tiles that make up the word, into the corresponding squares delete
-		 * the used tiles from the player's deck
-		 * 
-		 * refill the player's deck check the score for the word add the score to the
-		 * player's score
-		 */
-
 	}
 
-	public boolean checkWordInDeck(String word, Player player){
-
+	/**
+	 * check the word can be made with words from the deck.
+	 * specifically this checks if the tile that is going to be placed on the board is currently in the deck.
+	 * @param word
+	 * @param player
+	 * @return
+	 */
+	public boolean checkWordInDeck(String word, Player player) {
+		//check for every letter in the word
 		char[] letters = splitWord(word);
 		int count = 0;
-		for (int i = 0 ; i < letters.length ; i++) {
+		for (int i = 0; i < letters.length; i++) {
 			for (int j = 0; j < 7; j++) {
+				//if the tile is in the deck add 1 to the counter
 				if (player.getDeck().getTileIndex(j).getLetter() == letters[i]) {
-					
-					System.out.println(letters[i]);
 					count++;
 				}
 			}
 		}
-		if (count > letters.length) {
+		// the counter is equal or greater than the letters.length that means all the tiles needed to make the word exist and there could even be extra.
+		if (count >= letters.length) {
 			return true;
 		} else
 			return false;
 	}
 
+	//check that the square where we wlll place a tile is not occupied by a tile that is not a useful tile
 	public boolean checkSquaresUnocuppied(String[] command, Player player) throws OutOfBoundsException, Exception {
 		// generate command parameters
 		String word = command[1];
@@ -501,6 +530,10 @@ public class Game {
 
 	}
 
+	//check if any square in the position of the word contain usefultiles.
+	//if a tile is a usefull tile it means that it is already part of the word at the correct position
+	//so when placing the tiles, the specific tile does not need to be placed again.
+	// meaning it can stay in the deck of the player
 	public int[] containsUsefullTile(String[] command, Player player) throws Exception {
 
 		// generate command parameters
@@ -520,19 +553,19 @@ public class Game {
 			direction = Direction.HORIZONTAL;
 		} else
 			direction = Direction.VERTICAL;
-		
-		if(board.getSquare(x, y).getTile() != null) {
-		if (board.getSquare(x, y).getTile().equals(new Tile(letters[0]))) {
-			usefullTileIndex[0] = 0;
-		}
 
-		for (int i = 1; i < word.length(); i++) {
-
-			if (board.getNextSquare(board.getSquare(x, y), direction).getTile().equals(new Tile(letters[i]))) {
-				usefullTileIndex[i] = i;
-
+		if (board.getSquare(x, y).getTile() != null) {
+			if (board.getSquare(x, y).getTile().equals(new Tile(letters[0]))) {
+				usefullTileIndex[0] = 0;
 			}
-		}
+
+			for (int i = 1; i < word.length(); i++) {
+
+				if (board.getNextSquare(board.getSquare(x, y), direction).getTile().equals(new Tile(letters[i]))) {
+					usefullTileIndex[i] = i;
+
+				}
+			}
 		}
 
 		if (usefullTileIndex != null) {
@@ -540,8 +573,7 @@ public class Game {
 		} else
 			throw new OutOfBoundsException("Cannot place word there");
 
-	
-}
+	}
 
 	public void skip(String[] command, Player player) throws TilesNotInDeckException {
 
@@ -574,30 +606,32 @@ public class Game {
 			}
 			Collections.shuffle(bag.getTiles());
 
-
 		}
 
 	}
-
+	//similar to word in deck but is used for the skip command
+	//checks that the tiles reuested to replace are in the deck
+	//return true if all tiles requested are in deck 
+	//return false if one of the is not
 	public boolean checkTilesInDeck(String[] command, Player player) throws TilesNotInDeckException {
 
 		// generate command parameters
 		String tilesToSwap = command[1];
 		String[] individualTilesToSwap = tilesToSwap.split(",");
 		String word = "";
-		for(int i = 0 ; i < individualTilesToSwap.length ; i++) {
+		for (int i = 0; i < individualTilesToSwap.length; i++) {
 			word = word + individualTilesToSwap[i];
 		}
 		char[] letters = splitWord(word);
 		int count = 0;
-		for (int i =0; i < letters.length ;i++) {
+		for (int i = 0; i < letters.length; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (player.getDeck().getTileIndex(j).getLetter() == letters[i]) {
 
 					count++;
 				}
 
-		}
+			}
 		}
 		if (count >= letters.length) {
 			return true;
