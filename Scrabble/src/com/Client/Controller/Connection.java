@@ -1,4 +1,4 @@
-package client;
+package com.Client.Controller;
 
 import application.Score;
 

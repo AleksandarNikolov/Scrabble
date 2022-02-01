@@ -1,4 +1,4 @@
-package client;
+package com.Client.Controller;
 
 import packets.AddConnectionPacket;
 import packets.RemoveConnectionPacket;
