@@ -154,9 +154,6 @@ public class Board implements ANSI {
 					if(this.getSquare(i, j).getType().equals(SquareType.CENTRAL_SQUARE)) {
 						s += ANSI.PURPLE_BACKGROUND;
 						
-					}if(this.getSquare(i, j).getType().equals(SquareType.PLAIN)) {
-						s += ANSI.WHITE_BACKGROUND;
-						
 					}
 					s += "[ " + c + " ]" + ANSI.RESET;
 					

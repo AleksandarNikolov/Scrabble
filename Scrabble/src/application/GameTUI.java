@@ -10,7 +10,6 @@ public class GameTUI {
 
 	@SuppressWarnings("null")
 	public static void main(String[] args) throws TilesNotInDeckException, AlreadyPlacedException, Exception {
-
 		boolean running = true;
 
 		int MAXPLAYERS = 2;
@@ -42,32 +41,54 @@ public class GameTUI {
 			// print board
 			System.out.println(game.board.printBoard());
 			System.out.println(game.players.get(currentPlayerIndex).getDeck().toString());
+			System.out.println("Input should resemble either");
+			System.out.println("place word position direction Example => place car H8 H  ");
+			System.out.println("skip tiles    Example => skip A,B,C ");
+			System.out.println("exit");
+			System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " your current score is " + game.players.get(currentPlayerIndex).getCurrentScore());
 			System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " make your move:");
+			
 			String input = sc.nextLine();
 			input = input.toUpperCase();
 			
 			// command arrayList
 			String[] command;
 			command = input.split(" ");
-			game.checkWord(command);
 			// generate command parameters
 			String choice = command[0];
 
-			if (game.checkWord(command) && game.checkCommandLinePlace(command) && game.checkCommandLineSkip(command)) {
+		
 
 				// if place
-				if (choice.equals("PLACE")) {
-					game.checkCommandLinePlace(command);
+				if (choice.equals("PLACE") && game.checkCommandLinePlace(command)==true && game.checkWord(command)==true) {
 					game.place(command, game.players.get(currentPlayerIndex));
+					if (currentPlayerIndex == 0) {
+						currentPlayerIndex = 1;
+					} else if (currentPlayerIndex == 1) {
+						currentPlayerIndex = 0;
+					}
+					System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " your current score is " + game.players.get(currentPlayerIndex).getCurrentScore());
 				}
 
 				// if skip
-				if (choice.equals("SKIP")) {
-					game.checkCommandLineSkip(command);
+				else if (choice.equals("SKIP") && game.checkCommandLineSkip(command)==true) {
 					game.skip(command, game.players.get(currentPlayerIndex));
+					game.players.get(currentPlayerIndex).setSkippedTrue();
+					if(game.players.get(0).skipped && game.players.get(1).skipped) {
+						running = false;
+					}
+					if (currentPlayerIndex == 0) {
+						currentPlayerIndex = 1;
+					} else if (currentPlayerIndex == 1) {
+						currentPlayerIndex = 0;
+					}
+				}			
+				else if(choice.equals("EXIT")) {
+				running = false;
 				}
-				
-			}
+				else {
+					System.out.print("The first command should be either place, skip or exit");
+				}
 
 			
 

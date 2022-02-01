@@ -1,22 +1,19 @@
 package client;
 
-import application.Player;
-import packets.AddPlayerPacket;
-import packets.RemovePlayerPacket;
+import packets.AddConnectionPacket;
+import packets.RemoveConnectionPacket;
 
 public class EventListener {
 	
-	public void recieved(Object p) {
-		if(p instanceof AddPlayerPacket) {
-			AddPlayerPacket packet = (AddPlayerPacket)p;
-			PlayerHandler.players.put(packet.id, new Player(packet.id,packet.name));
-			System.out.println(packet.name + "Has joined the game");
-			
-		}else if(p instanceof RemovePlayerPacket) {
-			RemovePlayerPacket packet = (RemovePlayerPacket)p;
-			System.out.println(PlayerHandler.players.get(packet.id).name + "has left the game");
-			PlayerHandler.players.remove(packet.id);
-			
+	public void received(Object p) {
+		if(p instanceof AddConnectionPacket) {
+			AddConnectionPacket packet = (AddConnectionPacket)p;
+			ConnectionHandler.connections.put(packet.id,new Connection(packet.id));
+			System.out.println(packet.id + " has connected");
+		}else if(p instanceof RemoveConnectionPacket) {
+			RemoveConnectionPacket packet = (RemoveConnectionPacket)p;
+			System.out.println("Connection: " + packet.id + " has disconnected");
+			ConnectionHandler.connections.remove(packet.id);
 		}
 	}
 

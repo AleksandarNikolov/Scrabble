@@ -18,6 +18,7 @@ public class Player {
 	public int score;
 	private Deck deck;
 	private int currentScore;
+	public boolean skipped = false;
 
 	/**
 	 * Creates a new Player object
@@ -55,7 +56,15 @@ public class Player {
 	public int getId() {
 		return id;
 	}
-
+	
+	public void setSkippedTrue() {
+		skipped = true;
+	}
+	
+	public void setSkippedFalse() {
+		skipped = false;
+	}
+	
 	/*
 	 * set the id of the player
 	 */

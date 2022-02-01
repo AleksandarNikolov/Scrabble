@@ -38,13 +38,46 @@ public class Deck {
 	 */
 	public Tile getTile(char letter) {
 		Tile temp = null;
-		for (int i = 0; i <= deck.size(); i++) {
-			if (deck.get(i).equals(letter)) {
+		for (int i = 0; i < deck.size(); i++) {
+			if (deck.get(i).getLetter() == letter) {
+				temp = deck.get(i);
+			}
+		}
+		return temp;
+	}
+	
+	/*
+	 * returns a tile with the specified character from the deck
+	 */
+	public Tile removeTile(char letter) {
+		Tile temp = null;
+		for (int i = 0; i < deck.size(); i++) {
+			if (deck.get(i).getLetter() == letter) {
 				temp = deck.get(i);
 				deck.remove(i);
 			}
 		}
 		return temp;
+	}
+	
+	/*
+	 * discard the tile containing the specified letter
+	 * letter is removed from deck and placed back into the bag
+	 */
+	public void discardTile(char letter, ArrayList<Tile> bag) {
+
+		try {
+			for (Tile tile : deck) {
+
+				if (tile.equals(letter)) {
+					deck.remove(tile);
+					bag.add(letter, tile);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Tile is not in deck");
+		}
 	}
 
 	/*
@@ -84,7 +117,7 @@ public class Deck {
 	 * of tiles
 	 */
 	public ArrayList<Tile> generateDeck(ArrayList<Tile> bag) {
-		for (int i = 0; i <= 7; i++) {
+		for (int i = 0; i < 7; i++) {
 			int rand = (int) (Math.random() * bag.size());
 			deck.add(i, bag.remove(rand));
 		}
@@ -97,12 +130,15 @@ public class Deck {
 	 * @param bag containing tiles
 	 */
 	public ArrayList<Tile> refillDeck(ArrayList<Tile> bag) {
-		for (int i = 0; i < 7; i++) {
-			if (deck.get(i) == null) {
-				int rand = (int) (Math.random() * bag.size());
-				deck.add(i, bag.remove(rand));
+		if(deck.size() < 7) {
+			int ammountToAdd = (7 - deck.size());
+		for (int i = 1; i <= ammountToAdd; i++) { 
+			int rand = (int) (Math.random() * bag.size());
+			deck.add(i,bag.remove(rand));
 			}
 		}
+		
+		
 		return deck;
 	}
 
@@ -112,30 +148,10 @@ public class Deck {
 	public String toString() {
 		String deckString = "";
 
-		for (int i = 0; i < DeckSize; i++) {
+		for (int i = 0; i < deck.size(); i++) {
 			deckString += "[" + deck.get(i) + "]";
 		}
 		return deckString;
-	}
-
-	/*
-	 * discard the tile containing the specified letter
-	 * letter is removed from deck and placed back into the bag
-	 */
-	public void discardTile(char letter, ArrayList<Tile> bag) {
-
-		try {
-			for (Tile tile : deck) {
-
-				if (tile.equals(letter)) {
-					deck.remove(tile);
-					bag.add(letter, tile);
-				}
-			}
-
-		} catch (Exception e) {
-			System.out.println("Tile is not in deck");
-		}
 	}
 
 	public void removeTile(Tile tile) {
