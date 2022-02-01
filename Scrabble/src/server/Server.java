@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.Server.Controller.Connection;
+import com.Server.Controller.ConnectionHandler;
+
 public class Server implements Runnable{
 	
 	private int port;
 	private ServerSocket serverSocket;
 	private boolean running = false;
-	private int id = 0;
+	private String name = "";
 	
 	public Server(int port) {
 		this.port = port;
@@ -42,10 +45,9 @@ public class Server implements Runnable{
 	}
 	
 	private void initSocket(Socket socket) {
-		Connection connection = new Connection(socket,id);
-		ConnectionHandler.connections.put(id,connection);
+		Connection connection = new Connection(socket,name, null);
+		ConnectionHandler.players.put(name,connection);
 		new Thread(connection).start();
-		id++;
 	}
 	
 	public void shutdown() {

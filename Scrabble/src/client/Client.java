@@ -8,54 +8,76 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
-import packets.RemoveConnectionPacket;
+import packets.RemovePlayerPacket;
 
-public class Client implements Runnable{
+public class Client implements Runnable {
 	
+	
+	public static void main(String args[]) {
+		
+		Scanner sc = new Scanner(System.in);
+		Client client = new Client("localhost",8888);
+		client.connect();
+		
+	}
+	
+	
+	
+
+	// client variables
+
 	private String host;
 	private int port;
-	
+
 	private Socket socket;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
-	
 	private boolean running = false;
 	private EventListener listener;
-	
+
+	// constructor
+
 	public Client(String host, int port) {
 		this.host = host;
 		this.port = port;
 	}
-	
+
+	// connect to server
 	public void connect() {
+
 		try {
-			socket = new Socket(host,port);
+			socket = new Socket(host, port);
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 			listener = new EventListener();
 			new Thread(this).start();
-			System.out.println("connected to server");
-		}catch(ConnectException e) {
-			System.out.println("Unable to connect to the server");
-		}catch(IOException e) {
+
+		} catch (ConnectException e) {
+			System.out.println("Unable to connect to server");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
-	
+
+	// close connection
 	public void close() {
+
 		try {
 			running = false;
-			RemoveConnectionPacket packet = new RemoveConnectionPacket();
-			sendObject(packet);
+			RemovePlayerPacket packet = new RemovePlayerPacket();
+			sendObject(packet); 
 			in.close();
 			out.close();
 			socket.close();
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	//send data to the server
 	public void sendObject(Object packet) {
+		
 		try {
 			out.writeObject(packet);
 		}catch(IOException e) {
@@ -63,24 +85,31 @@ public class Client implements Runnable{
 		}
 	}
 	
+	
 	@Override
 	public void run() {
 		try {
 			running = true;
-			
-			while(running) {
+
+			while (running) {
+
 				try {
+
 					Object data = in.readObject();
 					listener.received(data);
-				}catch(ClassNotFoundException e) {
+
+				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
-				}catch(SocketException e) {
+				} catch (SocketException e) {
 					close();
 				}
+
 			}
-		}catch(IOException e) {
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 }
