@@ -1,4 +1,4 @@
-package chat;
+package com.Client.Controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,14 +9,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class Client2 {
+public class ChatClient {
 	
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
 	private String username;
 
-	public Client2(Socket socket,String username) {
+	public ChatClient(Socket socket,String username) {
 		
 		try {
 			this.socket = socket;
@@ -88,7 +88,7 @@ public class Client2 {
 		System.out.println("enter username");
 		String username = scanner.nextLine();
 		Socket socket = new Socket("localhost",8888);
-		Client2 client = new Client2(socket, username);
+		ChatClient client = new ChatClient(socket, username);
 		client.listenForMessage();
 		client.sendMessage();
 	}

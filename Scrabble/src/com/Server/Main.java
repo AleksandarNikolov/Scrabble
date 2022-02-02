@@ -1,8 +1,11 @@
 package com.Server;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Scanner;
 
+import com.Server.Controller.ChatServer;
 import com.Server.Controller.Server;
 
 
@@ -28,7 +31,9 @@ public class Main {
 	
 	public static synchronized void main(String[] args) throws Exception {
 		
-		Server server = new Server(5000);
+		Server server = new Server(8888);
+		
+		//server.startServer();
 		server.start();
 		
 

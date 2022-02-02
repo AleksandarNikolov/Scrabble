@@ -1,4 +1,4 @@
-package chat;
+package com.Client.Controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,17 +8,17 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ClientHandler implements Runnable {
+public class ChatHandler implements Runnable {
 	
 	
-	public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
+	public static ArrayList<ChatHandler> clientHandlers = new ArrayList<>();
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
 	private String clientUserName;
 	
 	
-	public ClientHandler(Socket socket) {
+	public ChatHandler(Socket socket) {
 		try {
 			this.socket = socket;
 			this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -53,7 +53,7 @@ public class ClientHandler implements Runnable {
 		
 	}
 	public void broadCastMessage(String messageToSend) {
-		for(ClientHandler clientHandler : clientHandlers) {
+		for(ChatHandler clientHandler : clientHandlers) {
 			try {
 				if(!clientHandler.clientUserName.equals(clientUserName)) {
 					clientHandler.bufferedWriter.write(messageToSend);

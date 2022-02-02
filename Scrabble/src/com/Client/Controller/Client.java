@@ -1,8 +1,12 @@
 package com.Client.Controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -12,18 +16,6 @@ import packets.RemovePlayerPacket;
 
 public class Client implements Runnable {
 	
-	
-	public static void main(String args[]) {
-		
-		Scanner sc = new Scanner(System.in);
-		Client client = new Client("localhost",8888);
-		client.connect();
-		
-	}
-	
-	
-	
-
 	// client variables
 
 	private String host;
@@ -32,15 +24,44 @@ public class Client implements Runnable {
 	private Socket socket;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
+	private BufferedReader bufferedReader;
+	private BufferedWriter bufferedWriter;
+	private String username;
 	private boolean running = false;
 	private EventListener listener;
 
 	// constructor
-
-	public Client(String host, int port) {
-		this.host = host;
-		this.port = port;
+	public Client(Socket socket,String username) {
+		
+		try {
+			this.socket = socket;
+			this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			this.username = username;
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
+	
+	public void listenForMessage() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				String msgFromGroupChat;
+				while(socket.isConnected()){
+					try {
+						msgFromGroupChat = bufferedReader.readLine();
+						System.out.println(msgFromGroupChat);
+					}catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+	}
+
 
 	// connect to server
 	public void connect() {

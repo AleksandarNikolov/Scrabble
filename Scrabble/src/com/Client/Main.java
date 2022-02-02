@@ -2,10 +2,14 @@ package com.Client;
 
 
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.Client.Controller.Client;
 
+import application.Player;
 import packets.AddConnectionPacket;
 
 public class Main {
@@ -25,9 +29,9 @@ public class Main {
 	
 	static final String SENDCHAT = "SENDCHAT";
 	static final String NOTIFYCHAT = "NOTIFYCHAT";
-	
 
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws UnknownHostException, IOException {
 		
 		
 		
@@ -37,19 +41,17 @@ public class Main {
 				System.out.println("Enter your name");
 				// Add player 1
 				Scanner sc = new Scanner(System.in);
-				String name = sc.nextLine();
+				String username = sc.nextLine();
 				
+				Socket socket = new Socket("localhost",8888);
+				Client client = new Client(socket, username);
 				
-		
-				
-				
-				
-				
-				Client client = new Client("localhost",5000);
 				client.connect();
 				
 				AddConnectionPacket packet = new AddConnectionPacket();
 				client.sendObject(packet);
+				
+				
 				
 				// Assign players to game
 				System.out.println("Enter a command");
@@ -61,7 +63,11 @@ public class Main {
 				
 				switch(command[0]) {
 				  case ANNOUNCE:
-				    // code block
+					  
+				client.sendObject(input);
+				
+				client.listenForMessage();
+					  
 					  break;
 				  case WELCOME:
 				    // code block

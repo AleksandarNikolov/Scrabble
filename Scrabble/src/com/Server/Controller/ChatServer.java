@@ -1,14 +1,16 @@
-package chat;
+package com.Server.Controller;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server2 {
+import com.Client.Controller.ChatHandler;
+
+public class ChatServer {
 	
 	private ServerSocket serverSocket;
 	
-	public Server2(ServerSocket serverSocket) {
+	public ChatServer(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
 	}
 
@@ -19,7 +21,7 @@ public class Server2 {
 				
 				Socket socket = serverSocket.accept();
 				System.out.println("New client has connected");
-				ClientHandler clientHandler = new ClientHandler(socket);
+				ChatHandler clientHandler = new ChatHandler(socket);
 				
 				Thread thread = new Thread(clientHandler);
 				thread.start();
@@ -41,12 +43,6 @@ public class Server2 {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(8888);
-		Server2 server = new Server2(serverSocket);
-		server.startServer();
-			
-		}
 	
 	
 }
