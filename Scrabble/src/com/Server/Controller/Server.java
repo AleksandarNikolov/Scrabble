@@ -42,8 +42,8 @@ public class Server implements Runnable{
 	}
 	
 	private void initSocket(Socket socket) {
-		Connection connection = new Connection(socket,name, null);
-		ConnectionHandler.players.put(name,connection);
+		Player connection = new Player(socket,name, null);
+		PlayerHandler.players.put(name,connection);
 		new Thread(connection).start();
 	}
 	

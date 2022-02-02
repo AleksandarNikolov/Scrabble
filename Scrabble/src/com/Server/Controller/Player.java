@@ -8,7 +8,7 @@ import java.net.Socket;
 
 import application.Score;
 
-public class Connection implements Runnable{
+public class Player implements Runnable{
 	
 	private Socket socket;
 	private ObjectInputStream in;
@@ -20,7 +20,7 @@ public class Connection implements Runnable{
 	private EventListener listener;
 	private boolean running = false;
 	
-	public Connection(Socket socket, String name,Score score) {
+	public Player(Socket socket, String name,Score score) {
 		this.socket = socket;
 		this.name = name;
 		this.score = score;

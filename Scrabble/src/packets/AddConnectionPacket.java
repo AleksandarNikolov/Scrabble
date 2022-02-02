@@ -10,7 +10,6 @@ public class AddConnectionPacket implements Serializable{
 	
 	public int id;
 	public String name;
-	public int totalScore;
 	public Score score;
 
 }
