@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.Client.Controller.ChatHandler;
+import chatToGame.PlayerHandler;
 
 public class Server implements Runnable{
 	
@@ -33,7 +33,7 @@ public class Server implements Runnable{
 				
 				Socket socket = serverSocket.accept();
 				System.out.println("New client has connected");
-				ChatHandler clientHandler = new ChatHandler(socket);
+				PlayerHandler clientHandler = new PlayerHandler(socket);
 				
 				Thread thread = new Thread(clientHandler);
 				thread.start();

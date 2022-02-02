@@ -62,12 +62,13 @@ public class GameTUI {
 				// if place
 				if (choice.equals("PLACE") && game.checkCommandLinePlace(command)==true && game.checkWord(command)==true) {
 					game.place(command, game.players.get(currentPlayerIndex));
+					System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " you scored " + game.players.get(currentPlayerIndex).getCurrentScore());
+					System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " your total score is " + game.players.get(currentPlayerIndex).getScore());
 					if (currentPlayerIndex == 0) {
 						currentPlayerIndex = 1;
 					} else if (currentPlayerIndex == 1) {
 						currentPlayerIndex = 0;
 					}
-					System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " your current score is " + game.players.get(currentPlayerIndex).getCurrentScore());
 				}
 
 				// if skip

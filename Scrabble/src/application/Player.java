@@ -99,6 +99,13 @@ public class Player {
 	public void setScore(int score) {
 		this.score = score;
 	}
+	
+	/*
+	 * set the final score of the player
+	 */
+	public void addScore(int score) {
+		this.score += score;
+	}
 
 	/**
 	 * Returns the deck of the player

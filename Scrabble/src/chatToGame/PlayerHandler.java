@@ -1,4 +1,4 @@
-package com.Client.Controller;
+package chatToGame;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,24 +8,24 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ChatHandler implements Runnable {
+public class PlayerHandler implements Runnable {
 	
 	
-	public static ArrayList<ChatHandler> clientHandlers = new ArrayList<>();
+	public static ArrayList<PlayerHandler> playerHandlers = new ArrayList<>();
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
 	private String clientUserName;
 	
 	
-	public ChatHandler(Socket socket) {
+	public PlayerHandler(Socket socket) {
 		try {
 			this.socket = socket;
 			this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			this.clientUserName = bufferedReader.readLine();
-			clientHandlers.add(this);
-			broadCastMessage("Server: " + clientUserName + " has entered the chat");
+			playerHandlers.add(this);
+			broadCastMessage("WELCOME: " + clientUserName);
 			
 		}catch (IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
@@ -40,7 +40,23 @@ public class ChatHandler implements Runnable {
 		try {
 			
 			messageFromClient = bufferedReader.readLine();
-			broadCastMessage(messageFromClient);
+			
+
+			String [] splitMessage = messageFromClient.split(" ");
+			String command = splitMessage[0];
+			
+			
+			
+			
+			
+		
+			
+			
+			//broadCastMessage(messageFromClient);
+			
+			
+			
+			
 			
 			
 		}catch(IOException e) {
@@ -53,12 +69,12 @@ public class ChatHandler implements Runnable {
 		
 	}
 	public void broadCastMessage(String messageToSend) {
-		for(ChatHandler clientHandler : clientHandlers) {
+		for(PlayerHandler playerHandler : playerHandlers) {
 			try {
-				if(!clientHandler.clientUserName.equals(clientUserName)) {
-					clientHandler.bufferedWriter.write(messageToSend);
-					clientHandler.bufferedWriter.newLine();
-					clientHandler.bufferedWriter.flush();
+				if(!playerHandler.clientUserName.equals(clientUserName)) {
+					playerHandler.bufferedWriter.write(messageToSend);
+					playerHandler.bufferedWriter.newLine();
+					playerHandler.bufferedWriter.flush();
 				}
 			}catch(IOException e) {
 				closeEverything(socket,bufferedReader,bufferedWriter);
@@ -67,7 +83,7 @@ public class ChatHandler implements Runnable {
 	}
 	
 	public void removeClientHandler() {
-		clientHandlers.remove(this);
+		playerHandlers.remove(this);
 		broadCastMessage("Server" + clientUserName + " has left");
 	}
 	

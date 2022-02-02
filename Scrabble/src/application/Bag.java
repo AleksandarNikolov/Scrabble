@@ -119,7 +119,7 @@ public class Bag {
 			tiles.add(new Tile('Z'));
 		}
 		for (int i = 0; i <= 2; i++) {
-			tiles.add(new Tile(' '));
+			tiles.add(new Tile('!'));
 		}
 
 	}

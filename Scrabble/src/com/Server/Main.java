@@ -5,8 +5,9 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Scanner;
 
-import com.Server.Controller.ChatServer;
 import com.Server.Controller.Server;
+
+import chatToGame.Server;
 
 
 

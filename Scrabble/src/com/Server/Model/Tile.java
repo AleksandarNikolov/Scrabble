@@ -32,7 +32,7 @@ public class Tile {
 			value = 4;
 		}
 		if (letter == 'E') {
-			value = -1;
+			value = 1;
 		}
 		if (letter == 'F') {
 			value = 4;
@@ -97,7 +97,7 @@ public class Tile {
 		if (letter == 'Z') {
 			value = 10;
 		}
-		if (letter == ' ') {
+		if (letter == '!') {
 			value = 0;
 		}
 

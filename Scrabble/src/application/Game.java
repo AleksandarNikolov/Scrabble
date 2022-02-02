@@ -96,7 +96,7 @@ public class Game {
 		} else if (turn == 1 && (x != 8 || y != 8)) {
 
 			System.out.println("On the first turn you must place the first tile in the center ");
-		} else if (dir == "H") {
+		} else if (dir == "V") {
 			direction = Direction.HORIZONTAL;
 			// check for every tile in the word.
 			// ceck that every tile adjacent to this tile, either doenst have a tile or is
@@ -202,7 +202,13 @@ public class Game {
 		// check if position is valid
 
 		String[] part = position.split("(?<=\\D)(?=\\d)");
-
+		
+		//check string
+		if(part.length != 2) {
+			System.out.println("Position input is incorrect");
+			return false;
+		}
+		
 		// check letter
 		char letter = part[0].charAt(0);
 		if (!Character.isUpperCase(letter) || Character.isDigit(letter))
@@ -213,7 +219,7 @@ public class Game {
 
 		// check number
 		String number = part[1];
-		int[] numberInt = new int[1];
+		int[] numberInt = new int[10];
 		numberInt[0] = Integer.parseInt(number);
 		if ((numberInt[0] % 1 == 0)) {
 
@@ -370,8 +376,8 @@ public class Game {
 
 		char[] letters = splitWord(word);
 		int[] positions = splitPosition(position);
-		int x = positions[0];
-		int y = positions[1];
+		int y = positions[0];
+		int x = positions[1];
 
 		/*
 		 * if splitWord position on board must be free and the length of the word must
@@ -456,8 +462,14 @@ public class Game {
 			//the letter multipliers are multiplied by the letter values
 			//the word multipliers are multiplied together
 			//at the end we just multiply the added up score from all the letters with the word multiplier
-			//if there was no special tile for example, the world multipler will just be 1
+			//if there was no special tile for example, the world multiplier will just be 1
 			score = score * multiplierW;
+			
+			//for BINGO
+			if(word.length() == 7) {
+				score = score + 50;
+			}
+			
 			player.setCurrentScore(score);
 
 			//refil the deck of the player with new tiles from the bag
@@ -502,8 +514,8 @@ public class Game {
 		int count = 0;
 		char[] letters = splitWord(word);
 		int[] positions = splitPosition(position);
-		int x = positions[0];
-		int y = positions[1];
+		int y = positions[0];
+		int x = positions[1];
 		Direction direction;
 
 		if (dir == "H") {

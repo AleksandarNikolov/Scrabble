@@ -97,7 +97,7 @@ public class Tile {
 		if (letter == 'Z') {
 			value = 10;
 		}
-		if (letter == ' ') {
+		if (letter == '!') {
 			value = 0;
 		}
 

@@ -1,4 +1,4 @@
-package com.Client.Controller;
+package chatToGame;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,14 +9,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class ChatClient {
+public class Client {
 	
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
 	private String username;
 
-	public ChatClient(Socket socket,String username) {
+	public Client(Socket socket,String username) {
 		
 		try {
 			this.socket = socket;
@@ -24,6 +24,7 @@ public class ChatClient {
 			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			this.username = username;
 		}catch (IOException e) {
+			e.printStackTrace();
 			closeEverything(socket,bufferedReader, bufferedWriter);
 		}
 		
@@ -44,7 +45,8 @@ public class ChatClient {
 				bufferedWriter.flush();
 			}
 		}catch (IOException e) {
-			closeEverything(socket,bufferedReader, bufferedWriter);
+			e.printStackTrace();
+			//closeEverything(socket,bufferedReader, bufferedWriter);
 		}
 		
 	}
@@ -53,13 +55,26 @@ public class ChatClient {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String msgFromGroupChat;
+				String message;
 				while(socket.isConnected()){
 					try {
-						msgFromGroupChat = bufferedReader.readLine();
-						System.out.println(msgFromGroupChat);
+						message = bufferedReader.readLine();
+						System.out.println(message);
+						
+						//String [] splitMessage = message.split(message);
+						//String command = splitMessage[0];
+						
+						
+						
+						
+						
+						
+						
+						
+						
 					}catch (IOException e) {
-						closeEverything(socket,bufferedReader, bufferedWriter);
+						e.printStackTrace();
+						//closeEverything(socket,bufferedReader, bufferedWriter);
 					}
 				}
 			}
@@ -88,7 +103,7 @@ public class ChatClient {
 		System.out.println("enter username");
 		String username = scanner.nextLine();
 		Socket socket = new Socket("localhost",8888);
-		ChatClient client = new ChatClient(socket, username);
+		Client client = new Client(socket, username);
 		client.listenForMessage();
 		client.sendMessage();
 	}
