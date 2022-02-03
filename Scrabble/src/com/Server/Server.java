@@ -1,10 +1,12 @@
-package chatToGame;
+package com.Server;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.Server.Controller.PlayerHandler;
 
 public class Server {
 	
@@ -25,6 +27,7 @@ public class Server {
 				
 				Thread thread = new Thread(clientHandler);
 				thread.start();
+				clientHandler.listenForPlayerMessage();
 				
 				
 			}

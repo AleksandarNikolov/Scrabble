@@ -1,6 +1,5 @@
 package com.Server.Model;
 
-import application.Deck;
 
 /**
  * Class for Player in Scrabble

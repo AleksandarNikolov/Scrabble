@@ -25,7 +25,7 @@ import wordchecker.FileStreamScrabbleWordChecker;
 import wordchecker.InMemoryScrabbleWordChecker;
 import wordchecker.ScrabbleWordChecker;
 
-public class Game {
+public class Game implements Runnable{
 //if all players skip game ends.
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 0;
@@ -690,6 +690,12 @@ public class Game {
 
 	private int giveScore(Player player, int score) {
 		return score;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/// private int calculateWordPoints(int direction, Square square, Board board,
