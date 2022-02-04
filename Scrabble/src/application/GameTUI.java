@@ -43,7 +43,7 @@ public class GameTUI {
 			System.out.println(game.players.get(currentPlayerIndex).getDeck().toString());
 			System.out.println("Input should resemble either");
 			System.out.println("place word position direction Example => place car H8 H  ");
-			System.out.println("skip tiles    Example => skip A,B,C ");
+			System.out.println("skip tiles    Example => skip ABC ");
 			System.out.println("exit");
 			System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " your current score is " + game.players.get(currentPlayerIndex).getCurrentScore());
 			System.out.println("Player " + game.players.get(currentPlayerIndex).getName() + " make your move:");
