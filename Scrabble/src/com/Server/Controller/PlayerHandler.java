@@ -71,7 +71,7 @@ public class PlayerHandler implements Runnable {
 		String messageFromClient;
 		broadCastResponse(
 				"WELCOME: Here is a command list " + "\n" + "ANNOUNCE (PlayerName) (CHAT)" + "\n" + "REQUESTGAME" + "\n"
-						+ "MAKEMOVE MOVE WORD (StartCoordinate) (WORD)" + "\n" + "MAKEMOVE SWAP (TILES TO SWAP)");
+						+ "MAKEMOVE MOVE WORD (StartCoordinate) (WOR)" + "\n" + "MAKEMOVE SWAP (TILES TO SWAP)");
 		while (socket.isConnected()) {
 			try {
 				if (gameStarted == true && gameRunning == false) {
