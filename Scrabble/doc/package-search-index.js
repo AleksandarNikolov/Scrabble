@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"application"},{"l":"com.Client.Controller"},{"l":"com.Server"},{"l":"com.Server.Controller"},{"l":"com.Server.Model"},{"l":"exceptions"},{"l":"protocol"},{"l":"tests"},{"l":"wordchecker"}];updateSearchResults();

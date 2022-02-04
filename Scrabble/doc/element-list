@@ -1,0 +1,9 @@
+application
+com.Client.Controller
+com.Server
+com.Server.Controller
+com.Server.Model
+exceptions
+protocol
+tests
+wordchecker
