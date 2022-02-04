@@ -127,20 +127,29 @@ public class PlayerHandler implements Runnable {
 
 					break;
 				case MAKEMOVE:
-					if(splitMessage[1].equals("MOVE")){
-						broadCast("INFORMMOVE" + splitMessage[1]+splitMessage[2]+splitMessage[3]);
+					if(splitMessage[1].equals("MOVE") && game.checkCommandLinePlace(splitMessage)==true && game.checkWord(splitMessage)==true){
+						
 						
 						game.place(splitMessage, game.players.get(currentPlayerIndex));
 						broadCast(game.getBoard().printBoard());
 						broadCast(game.players.get(currentPlayerIndex).getDeck().toString());
 						
 						
-					}else if (splitMessage[1].equals("SWAP"))
+						broadCast("INFORMMOVE " + splitMessage[1]+ " " + splitMessage[2]+ " " +splitMessage[3]+ " " + splitMessage[4]);
+						
+					}else if (splitMessage[1].equals("SWAP")&& game.checkCommandLineSkip(splitMessage)==true)
 						
 						
 					game.skip(splitMessage, game.players.get(currentPlayerIndex));
 					broadCast(game.getBoard().printBoard());
 					broadCast(game.players.get(currentPlayerIndex).getDeck().toString());
+					
+					broadCast("INFORMMOVE " + splitMessage[1]+ " " +splitMessage[2]);
+					if (currentPlayerIndex == 0) {
+						currentPlayerIndex = 1;
+					} else if (currentPlayerIndex == 1) {
+						currentPlayerIndex = 0;
+					}
 					
 					break;
 				case GAMEOVER:
