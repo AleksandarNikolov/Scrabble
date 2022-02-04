@@ -48,11 +48,12 @@ public class PlayerHandler implements Runnable {
 	int currentPlayerIndex;
 	ArrayList<String> queue = new ArrayList<String>();
 
-	public PlayerHandler(Socket socket) {
+	public PlayerHandler(Socket socket,String username) {
 		try {
 			this.socket = socket;
 			this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			this.clientUserName = username;
 			playerHandlers.add(this);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,7 +66,7 @@ public class PlayerHandler implements Runnable {
 
 		String messageFromClient;
 		broadCastResponse("WELCOME: Here is a command list " + "\n" + "ANNOUNCE (PlayerName) (CHAT)" + "\n"
-				+ "REQUESTGAME" + "\n" + "MAKEMOVE WORD (StartCoordinate) (WORD)" + "\n" + "MAKEMOVE SWAP (WORD)");
+				+ "REQUESTGAME" + "\n" + "MAKEMOVE MOVE WORD (StartCoordinate) (WORD)" + "\n" + "MAKEMOVE SWAP (TILES TO SWAP)");
 		while (socket.isConnected()) {
 			try {
 
@@ -83,20 +84,19 @@ public class PlayerHandler implements Runnable {
 						} else if (namePlayer1 == null) {
 
 							namePlayer1 = splitMessage[1];
-							playerHandlers.get(socket.getLocalPort()).setUserName(splitMessage[1]);
 							broadCastResponse("WELCOME " + UNIT_SEPARATOR + splitMessage[1]);
 						} else if (namePlayer1 != null) {
 							namePlayer2 = splitMessage[1];
-							playerHandlers.get(socket.getLocalPort()).setUserName(splitMessage[1]);
 						}
+					}else {
+						broadCastResponse("Invalid input,  please stick to the aforementioned command layout");
 					}
-					broadCastResponse("Invalid input,  please stick to the aforementioned command layout");
 					break;
 				case REQUESTGAME:
 					if (splitMessage.length == 1) {
 						for (PlayerHandler playerHandler : playerHandlers) {
 							if (playerHandler.clientUserName.equals(clientUserName)) {
-								queue.add(clientUserName);
+								queue.add(this.getUserName());
 							} else
 								broadCastResponse("Request game error");
 
@@ -113,6 +113,10 @@ public class PlayerHandler implements Runnable {
 							
 							Random r = new Random();
 							currentPlayerIndex = r.nextInt(game.players.size());
+							
+							
+							broadCast(game.board.printBoard());
+							broadCast(game.players.get(currentPlayerIndex).getDeck().toString());
 
 							broadCast("Player " + queue.get(currentPlayerIndex) + " goes first");
 						} 
@@ -123,17 +127,21 @@ public class PlayerHandler implements Runnable {
 
 					break;
 				case MAKEMOVE:
+					if(splitMessage[1].equals("MOVE")){
+						broadCast("INFORMMOVE" + splitMessage[1]+splitMessage[2]+splitMessage[3]);
+						
+						game.place(splitMessage, game.players.get(currentPlayerIndex));
+						broadCast(game.getBoard().printBoard());
+						broadCast(game.players.get(currentPlayerIndex).getDeck().toString());
+						
+						
+					}else if (splitMessage[1].equals("SWAP"))
+						
+						
+					game.skip(splitMessage, game.players.get(currentPlayerIndex));
 					broadCast(game.getBoard().printBoard());
+					broadCast(game.players.get(currentPlayerIndex).getDeck().toString());
 					
-					break;
-				case NEWTILES:
-					// code block
-					break;
-				case INFORMMOVE:
-					// code block
-					break;
-				case ERROR:
-					// code block
 					break;
 				case GAMEOVER:
 					break;

@@ -35,7 +35,7 @@ public class Game {
 
 	public ArrayList<Player> players = new ArrayList<Player>();
 	private int currentPlayerIndex;
-	Board board = new Board();
+	public Board board = new Board();
 	Bag bag = new Bag();
 
 	public Game(ArrayList<String> queue) {
@@ -79,9 +79,9 @@ public class Game {
 		int adjasentCount = 0;
 
 		// generate command parameters
-		String word = command[1];
 		String position = command[2];
 		String dir = command[3];
+		String word = command[4];
 
 		// create placement variables
 		char[] letters = splitWord(word);
@@ -104,16 +104,16 @@ public class Game {
 			// off the board.
 			for (int i = 0; i < word.length(); i++) {
 
-				if (!(board.getSquare((x + 1), y).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare((x + 1), y).getTile() == null) || !(board.isField(x + 1, y))) {
 					adjasentCount++;
 				}
-				if (!(board.getSquare((x - 1), y).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare((x - 1), y).getTile() == null) || !(board.isField(x - 1, y))) {
 					adjasentCount++;
 				}
-				if (!(board.getSquare(x, y + 1).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare(x, y + 1).getTile() == null) || !(board.isField(x, y + 1))) {
 					adjasentCount++;
 				}
-				if (!(board.getSquare(x, (y - 1)).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare(x, (y - 1)).getTile() == null) || !(board.isField(x, y - 1))) {
 					adjasentCount++;
 				}
 				x++;
@@ -122,16 +122,16 @@ public class Game {
 			direction = Direction.VERTICAL;
 			for (int i = 0; i < word.length(); i++) {
 
-				if (!(board.getSquare((x + 1), y).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare((x + 1), y).getTile() == null) || !(board.isField(x + 1, y))) {
 					adjasentCount++;
 				}
-				if (!(board.getSquare((x - 1), y).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare((x - 1), y).getTile() == null) || !(board.isField(x - 1, y))) {
 					adjasentCount++;
 				}
-				if (!(board.getSquare(x, y + 1).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare(x, y + 1).getTile() == null) || !(board.isField(x, y + 1))) {
 					adjasentCount++;
 				}
-				if (!(board.getSquare(x, (y - 1)).getTile() == null) || !(board.isField(x, y))) {
+				if (!(board.getSquare(x, (y - 1)).getTile() == null) || !(board.isField(x, y - 1))) {
 					adjasentCount++;
 				}
 				y++;
@@ -150,7 +150,7 @@ public class Game {
 	// checks the word with an inMemoryScrabbleWordCheker
 	public boolean checkWord(String[] command) {
 		ScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
-		String word = command[1];
+		String word = command[4];
 
 		ScrabbleWordChecker.WordResponse response = checker.isValidWord(word);
 		if (response == null) {
@@ -170,16 +170,16 @@ public class Game {
 		int wordError = 0;
 
 		// generate command parameters
-		String choice = command[0];
-		String word = command[1];
+		String choice = command[1];
 		String position = command[2];
 		String dir = command[3];
+		String word = command[4];
 
 		// check choice
-		if (choice.equals("PLACE")) {
+		if (choice.equals("MOVE")) {
 			count++;
 		}
-		if (choice.equals("SKIP")) {
+		if (choice.equals("SWAP")) {
 			count++;
 		}
 
@@ -254,12 +254,12 @@ public class Game {
 		int tileError = 0;
 
 		// generate command parameters
-		String commandString = command[0];
+		String commandString = command[1];
 
 		// check tiles input
 
-		String tilesToSwap = command[1];
-		String[] cleanTilesToSwap = tilesToSwap.split(",");
+		String tilesToSwap = command[2];
+		String[] cleanTilesToSwap = tilesToSwap.split("");
 		String StringTilesToSwap = cleanTilesToSwap[0].toString();
 		char[] individualTilesToSwap = splitWord(StringTilesToSwap);
 
@@ -371,9 +371,9 @@ public class Game {
 		int multiplierW = 1;
 
 		// generate command parameters
-		String word = command[1];
 		String position = command[2];
 		String dir = command[3];
+		String word = command[4];
 
 		char[] letters = splitWord(word);
 		int[] positions = splitPosition(position);
@@ -404,7 +404,7 @@ public class Game {
 				// if the tile is a useful tile, dont remove it from the deck.
 				// this is because the correct letter is already on that specific square
 				if (usefullTile[0] != 0) {
-					player.getDeck().removeTile(player.getDeck().getTile(letters[0]));
+					player.getDeck().removeTile(letters[0]);
 				}
 
 				// place for the remaning letters
@@ -421,7 +421,7 @@ public class Game {
 					// if the tile is a useful tile, dont remove it from the deck.
 					// this is because the correct letter is already on that specific square
 					if (usefullTile[i] != i) {
-						player.getDeck().removeTile(player.getDeck().getTile(letters[i]));
+						player.getDeck().removeTile(letters[i]);
 					}
 				}
 				// for horizontal placement
@@ -439,7 +439,7 @@ public class Game {
 				// this is because the correct letter is already on that specific square
 
 				if (usefullTile[0] != 0) {
-					player.getDeck().removeTile(player.getDeck().getTile(letters[0]));
+					player.getDeck().removeTile(letters[0]);
 				}
 
 				for (int i = 1; i < word.length(); i++) {
@@ -455,7 +455,7 @@ public class Game {
 					// this is because the correct letter is already on that specific square
 
 					if (usefullTile[i] != i) {
-						player.getDeck().removeTile(player.getDeck().getTile(letters[i]));
+						player.getDeck().removeTile(letters[i]);
 					}
 				}
 			}
@@ -471,7 +471,9 @@ public class Game {
 			if (word.length() == 7) {
 				score = score + 50;
 			}
-
+			
+			multiplierW = 1;
+			multiplierL = 1;
 			player.setCurrentScore(score);
 
 			// refil the deck of the player with new tiles from the bag
@@ -512,9 +514,9 @@ public class Game {
 	// that is not a useful tile
 	public boolean checkSquaresUnocuppied(String[] command, Player player) throws OutOfBoundsException, Exception {
 		// generate command parameters
-		String word = command[1];
 		String position = command[2];
 		String dir = command[3];
+		String word = command[4];
 
 		int count = 0;
 		char[] letters = splitWord(word);
@@ -556,9 +558,9 @@ public class Game {
 	public int[] containsUsefullTile(String[] command, Player player) throws Exception {
 
 		// generate command parameters
-		String word = command[1];
 		String position = command[2];
 		String dir = command[3];
+		String word = command[4];
 
 		int[] usefullTileIndex = new int[word.length()];
 
@@ -614,7 +616,7 @@ public class Game {
 
 			for (int i = 0; i < individualTilesToSwap.length; i++) {
 
-				player.getDeck().removeTile(player.getDeck().removeTile(letters[i]));
+				player.getDeck().removeTile(letters[i]);
 
 			}
 			player.getDeck().refillDeck(bag.getTiles());
@@ -636,8 +638,8 @@ public class Game {
 	public boolean checkTilesInDeck(String[] command, Player player) throws TilesNotInDeckException {
 
 		// generate command parameters
-		String tilesToSwap = command[1];
-		String[] individualTilesToSwap = tilesToSwap.split(",");
+		String tilesToSwap = command[2];
+		String[] individualTilesToSwap = tilesToSwap.split("");
 		String word = "";
 		for (int i = 0; i < individualTilesToSwap.length; i++) {
 			word = word + individualTilesToSwap[i];
@@ -698,6 +700,11 @@ public class Game {
 
 	private int giveScore(Player player, int score) {
 		return score;
+	}
+
+	public void incTurn() {
+		turn++;
+		
 	}
 
 	/// private int calculateWordPoints(int direction, Square square, Board board,

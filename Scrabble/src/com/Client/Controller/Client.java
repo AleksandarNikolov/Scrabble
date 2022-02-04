@@ -26,7 +26,7 @@ public class Client {
 			this.score = score;
 			this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			this.username = "";
+			this.username = username;
 		}catch (IOException e) {
 			e.printStackTrace();
 			closeEverything(socket,bufferedReader, bufferedWriter);
@@ -102,9 +102,12 @@ public class Client {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		
+		System.out.print("Enter a base username to identify yourself to the sever");
+		Scanner scanner = new Scanner(System.in);
+		String username = scanner.nextLine();
 		
 		Socket socket = new Socket("localhost",8888);
-		Client client = new Client(socket, null, null);
+		Client client = new Client(socket, username, null);
 		client.listenForMessage();
 		client.sendMessage();
 	}

@@ -59,26 +59,6 @@ public class Deck {
 		}
 		return temp;
 	}
-	
-	/*
-	 * discard the tile containing the specified letter
-	 * letter is removed from deck and placed back into the bag
-	 */
-	public void discardTile(char letter, ArrayList<Tile> bag) {
-
-		try {
-			for (Tile tile : deck) {
-
-				if (tile.equals(letter)) {
-					deck.remove(tile);
-					bag.add(letter, tile);
-				}
-			}
-
-		} catch (Exception e) {
-			System.out.println("Tile is not in deck");
-		}
-	}
 
 	/*
 	 * check to see if the deck has a certain letter
@@ -154,7 +134,9 @@ public class Deck {
 		return deckString;
 	}
 
-	public void removeTile(Tile tile) {
-		deck.remove(tile);
+	public ArrayList<Tile> getDeck() {
+		return deck;
 	}
+
+	
 }
