@@ -46,6 +46,7 @@ public class PlayerHandler implements Runnable {
 	Game game;
 	Thread gameThread;
 	int currentPlayerIndex;
+	boolean gameRunning = false;
 	ArrayList<String> queue = new ArrayList<String>();
 
 	public PlayerHandler(Socket socket,String username) {
@@ -113,6 +114,7 @@ public class PlayerHandler implements Runnable {
 							
 							Random r = new Random();
 							currentPlayerIndex = r.nextInt(game.players.size());
+							gameRunning = true;
 							
 							
 							broadCast(game.board.printBoard());
@@ -145,6 +147,11 @@ public class PlayerHandler implements Runnable {
 					broadCast(game.players.get(currentPlayerIndex).getDeck().toString());
 					
 					broadCast("INFORMMOVE " + splitMessage[1]+ " " +splitMessage[2]);
+					
+					if(game.players.get(0).skipped && game.players.get(1).skipped) {
+						gameRunning = false;
+					}
+					
 					if (currentPlayerIndex == 0) {
 						currentPlayerIndex = 1;
 					} else if (currentPlayerIndex == 1) {
@@ -159,7 +166,7 @@ public class PlayerHandler implements Runnable {
 					break;
 
 				case SENDCHAT:
-					broadCastChat(NOTIFYCHAT + UNIT_SEPARATOR + splitMessage[1] + UNIT_SEPARATOR + splitMessage[2]);
+					broadCastChat(NOTIFYCHAT + UNIT_SEPARATOR + clientUserName + UNIT_SEPARATOR + splitMessage[2]);
 					break;
 				default:
 					System.out.println("ERROR: Invalid command");
